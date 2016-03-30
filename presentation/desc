@@ -1,0 +1,3 @@
+Você já se perguntou como sua câmera é capaz de identificar faces quando vai tirar fotos? Ou como é que funciona uma aplicação de realidade aumentada? Essa palestra te convida a aprender conceitos introdutórios de visão computacional e a conhecer mais de suas aplicações através de exemplos com a biblioteca OpenCV utilizando Python.
+
+A palestra vai introduzir conceitos básicos de visão computacional: aquisição de imagem e pré-processamento, descritores para extração de características, processamento de alto nível. Além de noções introdutórias sobre aprendizado de máquina: classificadores básicos, clustering e matching.
