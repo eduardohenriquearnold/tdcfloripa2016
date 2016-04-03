@@ -1,0 +1,9 @@
+Complete AR app with OpenCV+Python
+https://github.com/rdmilligan/SaltwashAR
+
+OpenCV+Aruco+OpenGL animation
+https://www.youtube.com/watch?v=6F86znm-EMk
+
+Aruco Online Marker Generator
+http://terpconnect.umd.edu/~jwelsh12/enes100/markergen.html
+
