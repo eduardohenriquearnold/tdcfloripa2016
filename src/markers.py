@@ -56,12 +56,9 @@ def identifyCodeWithinDict(code):
 def getMarkerPatch(img, contour):
 	'''Extracts marker patch given a contour'''
 
-	#Get marker height and width
-	height = np.linalg.norm(contour[0,:]-contour[-1,:])
-	width = np.linalg.norm(contour[0,:]-contour[1,:])
-	height, width = np.round(height), np.round(width)
 
 	#Form destination points and get perspective transformation matrix
+	height, width = 100, 100
 	dst = np.array([[0,0], [width-1,0], [width-1,height-1], [0, height-1]], dtype='float32')
 	dst = orderPointsCW(dst)
 	matrix = cv2.getPerspectiveTransform(contour, dst)
