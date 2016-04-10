@@ -4,12 +4,14 @@
 import cv2
 import numpy as np
 import sys
+import itertools
 import codes
 
-debug=['patch']
+#Debug values: edges, contours, patches, markers
+debug=['markers']
 
 def orderPointsCW(pts):
-	'''Order set of points clock-wise'''
+	'''Order set of points clockwise'''
 
 	pts = np.array(pts, dtype='float32').reshape(len(pts),2)
 
@@ -18,7 +20,7 @@ def orderPointsCW(pts):
 	ptsOrig = pts - centroid
 
 	#Get angles and sort
-	angles = -np.arctan2(ptsOrig[:,1], ptsOrig[:,0])
+	angles = np.arctan2(ptsOrig[:,1], ptsOrig[:,0])
 	sorted_idx = np.argsort(angles)
 	return pts[sorted_idx]
 
@@ -29,6 +31,10 @@ def extractCandidates(img):
 	img = cv2.GaussianBlur(img, (5,5), 0)
 	edges = cv2.Canny(img, 100, 200)
 
+	if 'edges' in debug:
+		cv2.imshow('edges', edges)
+		cv2.waitKey(0)
+
 	#Get contours
 	_, contours, _ = cv2.findContours(edges, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
 
@@ -37,12 +43,20 @@ def extractCandidates(img):
 	for contour in contours:
 		#Get perimeter and poligonal approximation
 		perimeter = cv2.arcLength(contour, True)
-		approx = cv2.approxPolyDP(contour, 0.01*perimeter, True)
+		approx = cv2.approxPolyDP(contour, 0.1*perimeter, True)
 		
 		#Save as candidate if quadrilateral
 		if len(approx) == 4:
 			candidates.append(orderPointsCW(approx))
 
+	#Remove similar candidates
+	for idx1, idx2 in itertools.combinations(range(0,len(candidates)), 2):
+		try:
+			diff = np.mean(np.absolute(candidates[idx1]-candidates[idx2]))
+			if diff < 20:
+				candidates.pop(idx2)
+		except:
+			pass
 	return candidates
 
 def getMarkerCode(patch):
@@ -93,8 +107,25 @@ def showContours(img, contours):
 	cv2.imshow('contours', color)
 	cv2.waitKey(0)
 
-def detectMarkers(img):
-	'''Given an image, detect candidates and identify markers, if any'''
+def showMarkers(img, markers):
+	'''Helper function to show markers in image'''
+
+	#Convert img to BGR
+	color = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+
+	#Draw markers with circle on the orientation point
+	for marker in markers:
+		pts = marker['points'].astype('int32')
+		color = cv2.drawContours(color, [pts], -1, (0,0,255))
+		color = cv2.circle(color, tuple(pts[marker['orientation'],:]), 5, (255,0,0), -1)
+		centroid = np.sum(pts, axis=0)/len(pts)
+		color = cv2.putText(color, str(marker['id']), tuple(centroid), cv2.FONT_HERSHEY_SIMPLEX, 2, (255,255,255))
+
+	cv2.imshow('contours', color)
+	cv2.waitKey(0)
+
+def preprocess(img):
+	'''Preprocess image, adjust color to grayscale and resizes'''
 
 	#Convert to Grayscale
 	img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -103,6 +134,11 @@ def detectMarkers(img):
 	f = 640. / img.shape[0]
 	if (f<1):
 		img = cv2.resize(img, None, fx=f, fy=f)
+
+	return img
+
+def detectMarkers(img):
+	'''Given an image, detect candidates and identify markers, if any'''
 
 	#Get candidates contours
 	contours = extractCandidates(img)
@@ -118,17 +154,21 @@ def detectMarkers(img):
 		if id != -1:
 			markers.append({'id':id, 'orientation':orientation, 'points':contour})
 
-		if 'patch' in debug:
+		if 'patches' in debug:
 			print id, orientation
 			print code
 			cv2.imshow("patch", patch)
 			cv2.waitKey(0)
+
+	if 'markers' in debug:
+		showMarkers(img, markers)
 
 	return markers
 	
 
 #main proc
 img = cv2.imread(sys.argv[1])
+img = preprocess(img)
 markers = detectMarkers(img)
 print markers
 
