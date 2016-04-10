@@ -4,6 +4,9 @@
 import cv2
 import numpy as np
 import sys
+import codes
+
+debug=['patch']
 
 def orderPointsCW(pts):
 	'''Order set of points clock-wise'''
@@ -45,13 +48,19 @@ def extractCandidates(img):
 def getMarkerCode(patch):
 	'''Given a image patch, get marker binary code'''
 
-	threshold = 150
-	pass
+	cells = codes.cells
+	cellsize = patch.shape[0]/cells
 
-def identifyCodeWithinDict(code):
-	'''Given a marker code identify its ID and orientation'''
+	code = np.zeros((cells,cells))
 
-	pass
+	for i in range(cells):
+		for j in range(cells):
+			px = i*cellsize+0.5*cellsize
+			py = j*cellsize+0.5*cellsize
+			px, py = round(px), round(py)
+			code[i,j] = patch[px, py]/255.
+
+	return code			
 
 def getMarkerPatch(img, contour):
 	'''Extracts marker patch given a contour'''
@@ -65,6 +74,10 @@ def getMarkerPatch(img, contour):
 
 	#Perform perspective transform to get patch
 	patch = cv2.warpPerspective(img, matrix, (height, width))
+
+	#Perform Otsu's thresholding to have a binary image
+	_, patch = cv2.threshold(patch, 0, 255, cv2.THRESH_BINARY+cv2.THRESH_OTSU)
+
 	return patch
 
 def showContours(img, contours):
@@ -93,21 +106,31 @@ def detectMarkers(img):
 
 	#Get candidates contours
 	contours = extractCandidates(img)
-	showContours(img, contours)	
+
+	if 'contours' in debug:
+		showContours(img, contours)	
+
+	markers = []
 	for contour in contours:
 		patch = getMarkerPatch(img, contour)
-		cv2.imshow("patch", patch)
-		cv2.waitKey(0)
+		code = getMarkerCode(patch)
+		id, orientation = codes.matchCode(code)
+		if id != -1:
+			markers.append({'id':id, 'orientation':orientation, 'points':contour})
 
-#		code = getMarkerCode(patch)
-#		id, orientation = identifyCodeWithinDict(code)
-	
-	
+		if 'patch' in debug:
+			print id, orientation
+			print code
+			cv2.imshow("patch", patch)
+			cv2.waitKey(0)
+
+	return markers
 	
 
 #main proc
 img = cv2.imread(sys.argv[1])
-detectMarkers(img)
+markers = detectMarkers(img)
+print markers
 
 
 
