@@ -122,7 +122,7 @@ def showMarkers(img, markers):
 		color = cv2.putText(color, str(marker['id']), tuple(centroid), cv2.FONT_HERSHEY_SIMPLEX, 2, (255,255,255))
 
 	cv2.imshow('contours', color)
-	cv2.waitKey(0)
+	#cv2.waitKey(0)
 
 def preprocess(img):
 	'''Preprocess image, adjust color to grayscale and resizes'''
@@ -167,10 +167,15 @@ def detectMarkers(img):
 	
 
 #main proc
-img = cv2.imread(sys.argv[1])
-img = preprocess(img)
-markers = detectMarkers(img)
-print markers
+cam = cv2.VideoCapture(0)
+while(True):
+	_, img = cam.read()
+	img = preprocess(img)
+	markers = detectMarkers(img)
+
+	if cv2.waitKey(30) & 0xFF == ord('q'):
+		break
+#print markers
 
 
 
