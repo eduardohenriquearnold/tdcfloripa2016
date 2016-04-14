@@ -1,0 +1,144 @@
+---
+title: "Git 101"
+author: William Jamir Silva
+date: April 13, 2016
+output: ioslides_presentation
+logo: images/william.gif
+---
+
+## Git {.flexbox .vcenter}
+
+![Git VS Github](images/gitvsgithub.png)
+
+## Git {.flexbox .vcenter}
+
+![Centralized](images/version-control-fig2.png)
+![Distribuited](images/version-control-fig3.png)
+
+## Initializing a Repository {.flexbox .vcenter}
+
+<p style="font-size:60px">  Git Clone VS Git Init</p>
+
+## Initializing a Repository {.flexbox .vcenter}
+<div class="centered">
+This is where Git stores its database and configuration information, so that it can track your project.
+</div>
+
+## Checking the status of the repository {.flexbox .vcenter}
+<p style="font-size:50px"> git status</p>
+
+You can see your currently branch, unstagged files, stagged files 
+<p>HEAD is git slang for “the branch you’re currently working on”</p>
+
+## Basic Workflow {.flexbox .vcenter}
+<p style="font-size:60px"> git add [file]</p>
+Stage the files to be commited
+
+## Basic Workflow { .flexbox .vcenter}
+<p style="font-size:60px"> git commmit -m "message"</p>
+Once you have staged the files, you can commit
+
+HINT: git commit --amend
+
+## Basic Workflow { .flexbox .vcenter}
+<p style="font-size:60px">git push [origin] [branch]</p>
+Put your commits with your code on the server
+
+## Initial Configurarion {.flexbox .vcenter}
+<pre class="prettyprint" data-lang="Shell - Git">
+git config --global user.name 'William'</p>
+git config --global user.email 'williamjamir@gmail.com'</p>
+git config --global color.ui 'auto'
+</pre>
+
+## Hands On - Git Lab {.flexbox .vcenter}
+<pre class="prettyprint" data-lang="Shell - Git">
+git clone git@gitlab.com:williamjamir/example.git
+cd example
+touch README.md
+git add README.md
+git commit -m "add README"
+git push -u origin master
+</pre>
+
+## Usage {.flexbox .vcenter}
+![Basic Usage](images/basic-usage.svg)
+      <footer class="source">source: http://marklodato.github.io/visual-git-guide </footer>
+## Commands from previous image 
+
+<p style="font-size:50px"> git reset </p>
+Remove the file that is going to be commited
+
+<p style="font-size:50px"> git checkout  </p>
+Copies files from the stage to the working directory. 
+Use this to throw away local changes.
+
+## Commit {.flexbox .vcenter}
+<img src="images/commit-master.svg" alt="Drawing" style="width: 800px;"/>
+<footer class="source">source: http://marklodato.github.io/visual-git-guide </footer>
+## Branching {.flexbox .vcenter}
+Branches are used to develop features isolated from each other. 
+<p>The master branch is the "default" branch when you create a repository. </p>
+
+## Branching {.flexbox .vcenter}
+<p style="font-size:30px"> Create a new branch named "feature" and switch to it </p>
+<pre class="prettyprint"> git checkout -b feature </pre>
+
+## Branching {.flexbox .vcenter}
+<img src="images/branch.png" alt="Drawing" style="width: 200px;"/>
+
+## Deleting a Branch {.flexbox .vcenter}
+<p style="font-size:30px">  Switch back to master </p>
+<pre class="prettyprint"> git checkout master </pre>
+<p style="font-size:30px">  Delete the branch </p>
+<pre class="prettyprint" > git branch -d feature_x </pre>
+
+## Branch at remote repository {.flexbox .vcenter}
+<p style="font-size:30px">  A branch is not available to others unless you push the branch to your remote repository </p>
+<pre class="prettyprint"> git push origin <branch> </pre>
+
+## Update  {.flexbox .vcenter}
+<p style="font-size:30px">  To update your local repository to the newest commit, execute </p>
+<pre class="prettyprint"> git pull </pre>
+
+## Merge  {.flexbox .vcenter}
+<p style="font-size:30px"> To merge another branch into your active branch use </p>
+<pre class="prettyprint"> git merge <branch> </pre>
+
+## Merge {.flexbox .vcenter}
+<img src="images/merge.png" alt="Drawing" style="width: 600px;"/>
+
+## Comparing files / branchs  {.flexbox .vcenter}
+
+<pre class="prettyprint"> Git diff </pre>
+
+## Conflicts  {.flexbox .vcenter}
+
+In branch-a, you wrote the word "nine," but your friend wrote "eight." 
+<pre class="prettyprint"> 
+the number of planets are
+<<<<<<< HEAD
+nine
+=======
+eight
+>>>>>>> branch-a
+ </pre>
+
+<p>Git automatically adds conflict markers to the affected areas. </p>
+
+## {.flexbox .vcenter}
+
+<img src="images/git-model.png" alt="Drawing" style="width: 450px;"/>
+
+
+## Thank You { .flexbox .vleft .auto-fadein .nobackground}
+
+   <aside class="gdbar right"><img src="images/william.gif"></aside>
+<p style="font-size:30px">  
+<p>Git 101</p>
+<p>William Jamir Silva</p>
+<p>williamjamir@gmail.com</p>
+</p>
+
+
+
