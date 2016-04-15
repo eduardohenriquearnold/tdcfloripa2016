@@ -33,7 +33,7 @@ def extractCandidates(img):
 
 	if 'edges' in debug:
 		cv2.imshow('edges', edges)
-		cv2.waitKey(0)
+		cv2.waitKey(30)
 
 	#Get contours
 	_, contours, _ = cv2.findContours(edges, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
@@ -44,9 +44,12 @@ def extractCandidates(img):
 		#Get perimeter and poligonal approximation
 		perimeter = cv2.arcLength(contour, True)
 		approx = cv2.approxPolyDP(contour, 0.1*perimeter, True)
-		
+
 		#Save as candidate if quadrilateral
 		if len(approx) == 4:
+			approx = np.array(approx, dtype='float32').reshape(4,2)
+			criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
+			cv2.cornerSubPix(img, approx, (11,11), (-1,-1), criteria)
 			candidates.append(orderPointsCW(approx))
 
 	#Remove similar candidates
@@ -74,7 +77,7 @@ def getMarkerCode(patch):
 			px, py = round(px), round(py)
 			code[i,j] = patch[px, py]/255.
 
-	return code			
+	return code
 
 def getMarkerPatch(img, contour):
 	'''Extracts marker patch given a contour'''
@@ -144,7 +147,7 @@ def detectMarkers(img):
 	contours = extractCandidates(img)
 
 	if 'contours' in debug:
-		showContours(img, contours)	
+		showContours(img, contours)
 
 	markers = []
 	for contour in contours:
@@ -164,18 +167,16 @@ def detectMarkers(img):
 		showMarkers(img, markers)
 
 	return markers
-	
+
 
 #main proc
-cam = cv2.VideoCapture(0)
-while(True):
-	_, img = cam.read()
-	img = preprocess(img)
-	markers = detectMarkers(img)
+if __name__ == '__main__':
+	cam = cv2.VideoCapture(0)
+	while(True):
+		_, img = cam.read()
+		img = preprocess(img)
+		markers = detectMarkers(img)
 
-	if cv2.waitKey(30) & 0xFF == ord('q'):
-		break
-#print markers
-
-
-
+		if cv2.waitKey(30) & 0xFF == ord('q'):
+			break
+	#print markers
