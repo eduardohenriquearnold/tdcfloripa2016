@@ -1,0 +1,399 @@
+<!--
+Google IO 2012 HTML5 Slide Template
+
+Authors: Eric Bidelman <ebidel@gmail.com>
+         Luke Mahe <lukem@google.com>
+
+URL: https://code.google.com/p/io-2012-slides
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Google IO 2012</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <!--<meta name="viewport" content="initial-scale=0.4">-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" media="all" href="theme/css/default.css">
+  <link rel="stylesheet" media="all" href="theme/css/app.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="theme/css/phone.css">
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  <script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
+</head>
+<body style="opacity: 0">
+
+<slides class="layout-widescreen">
+
+<!-- <slide class="logoslide nobackground">
+  <article class="flexbox vcenter">
+    <span><img src="images/google_developers_logo.png"></span>
+  </article>
+</slide>
+ -->
+<slide class="title-slide segue nobackground">
+  <aside class="gdbar"><img src="images/google_developers_icon_128.png"></aside>
+  <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+  <hgroup class="auto-fadein">
+    <h1 data-config-title><!-- populated from slide_config.json --></h1>
+    <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
+    <p data-config-presenter><!-- populated from slide_config.json --></p>
+  </hgroup>
+</slide>
+
+
+<slide  >
+  
+    <hgroup>
+      <h2>Agenda</h2>
+      <h3></h3>
+    </hgroup>
+    <article ></article>
+ 
+</slide>
+
+<slide class="segue dark nobackground" >
+  
+    <aside class="gdbar"><img src="images/google_developers_icon_128.png"></aside>
+    <hgroup class="auto-fadein">
+      <h2>Visão Computacional</h2>
+      <h3></h3>
+    </hgroup>
+  
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Visão Computacional</h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter"><p>Definição</p></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Visão Computacional</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><p>Exemplo de Aplicação
+<img alt="Sample" src="images/sample.jpg" /></p></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Realidade Aumentada</h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter"><p>Citar um exemplo</p></article>
+ 
+</slide>
+
+<slide class="segue dark nobackground" >
+  
+    <aside class="gdbar"><img src="images/google_developers_icon_128.png"></aside>
+    <hgroup class="auto-fadein">
+      <h2>Python & OpenCV</h2>
+      <h3></h3>
+    </hgroup>
+  
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Python & OpenCV</h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter"><p>Packages and dependencias and which version we are using in this project</p></article>
+ 
+</slide>
+
+<slide class="segue dark nobackground" >
+  
+    <aside class="gdbar"><img src="images/google_developers_icon_128.png"></aside>
+    <hgroup class="auto-fadein">
+      <h2>Aquisição de Imagem</h2>
+      <h3></h3>
+    </hgroup>
+  
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Aquisição de Imagem pela Webcam</h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter"><p>Exemplo de Código:
+<pre class="prettyprint" data-lang="Python">
+from cv2 import *</p>
+<h1>initialize the camera</h1>
+<p>cam = VideoCapture(0)   # 0 -&gt; index of camera
+s, img = cam.read()
+if s:    # frame captured without any errors
+    namedWindow("cam-test",CV_WINDOW_AUTOSIZE)
+    imshow("cam-test",img)
+    waitKey(0)
+    destroyWindow("cam-test")
+    imwrite("filename.jpg",img) #save image
+</pre></p></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Aquisição de Imagem pela Webcam</h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter"><p>Talvez alguma imagem segurando os marcadores??</p></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Tratamento da Imagem</h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter"><p>Colocando a imagem capturada em escalas de cinza e redimensionando
+<pre class="prettyprint" data-lang="Python">
+    Código de tratamento da imagem
+</pre></p></article>
+ 
+</slide>
+
+<slide class="segue dark nobackground" >
+  
+    <aside class="gdbar"><img src="images/google_developers_icon_128.png"></aside>
+    <hgroup class="auto-fadein">
+      <h2>Detecção dos Marcadores</h2>
+      <h3></h3>
+    </hgroup>
+  
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Algoritmo de Borda (Canny)</h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter"><p>Explicação sobre identificação das bordas</p></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Algoritmo de Borda (Canny)</h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter"><pre class="prettyprint" data-lang="Python">
+
+    Code Goes Here
+
+
+
+</pre></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Algoritmo de Borda (Canny)</h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter"><p>IMAGE GOES HERE!</p></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Algoritmo de contorno</h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter"><p>Explicação sobre obtenção dos contornos</p></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Algoritmo de contorno</h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter"><pre class="prettyprint" data-lang="Python">
+
+    Code Goes Here
+
+
+</pre></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Algoritmo de contorno</h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter"><p>IMAGE GOES HERE!</p></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Algoritmo de Contorno</h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter"><p>Filtragem e porque filtramos</p></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Algoritmo de Contorno</h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter"><p>Ordenação 
+(uma imagem comparando talvez ele ordenado VS não ordenado)</p></article>
+ 
+</slide>
+
+<slide class="segue dark nobackground" >
+  
+    <aside class="gdbar"><img src="images/google_developers_icon_128.png"></aside>
+    <hgroup class="auto-fadein">
+      <h2>Extração de Perspectiva</h2>
+      <h3></h3>
+    </hgroup>
+  
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Extração de Perspectiva</h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter"><p>Explicação sobre perspectiva</p>
+<hr />
+<p>title: Extração de Perspectiva
+content_class: flexbox vcenter</p>
+<p>Image Goes Here</p></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Threshold adaptativo</h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter"><p>Explanation</p></article>
+ 
+</slide>
+
+<slide class="segue dark nobackground" >
+  
+    <aside class="gdbar"><img src="images/google_developers_icon_128.png"></aside>
+    <hgroup class="auto-fadein">
+      <h2>Identificação dos marcadores</h2>
+      <h3></h3>
+    </hgroup>
+  
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Marcadores</h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter"><p>Explicação sobre os ID's dos marcadores e pq usamos 4 diferentes</p></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Orientação dos Marcadores</h2>
+      <h3></h3>
+    </hgroup>
+    <article ><p>Realmente necessário??</p></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Aplicação Gráfica</h2>
+      <h3>Fazendo uma aplicação gráfica rodando nos marcadores</h3>
+    </hgroup>
+    <article class="flexbox vcenter"><p>Image Goes Here</p></article>
+ 
+</slide>
+
+<slide  >
+  
+    <hgroup>
+      <h2>Features</h2>
+      <h3></h3>
+    </hgroup>
+    <article class="flexbox vcenter"><p>Image to use as explaination about detection with features</p>
+<p>Explicação sobre o que é isso</p></article>
+ 
+</slide>
+
+
+<slide class="thank-you-slide segue nobackground">
+  <aside class="gdbar right"><img src="images/google_developers_icon_128.png"></aside>
+  <article class="flexbox vleft auto-fadein">
+    <h2>&lt;Thank You!&gt;</h2>
+    <p>Important contact information goes here.</p>
+  </article>
+  <p class="auto-fadein" data-config-contact>
+    <!-- populated from slide_config.json -->
+  </p>
+</slide>
+
+<!-- <slide class="logoslide dark nobackground">
+  <article class="flexbox vcenter">
+    <span><img src="images/google_developers_logo_white.png"></span>
+  </article>
+</slide> -->
+
+<slide class="backdrop"></slide>
+
+</slides>
+
+<script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-XXXXXXXX-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>
