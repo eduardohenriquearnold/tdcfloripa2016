@@ -155,6 +155,7 @@ def detectMarkers(img):
 		code = getMarkerCode(patch)
 		id, orientation = codes.matchCode(code)
 		if id != -1:
+			contour = np.roll(contour, -orientation, axis=0)
 			markers.append({'id':id, 'orientation':orientation, 'points':contour})
 
 		if 'patches' in debug:
