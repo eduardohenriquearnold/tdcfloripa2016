@@ -23,10 +23,10 @@ class ARapp:
         self.cam = cv2.VideoCapture(0)
 
         #set constant matrix
-        self.INVERSE_MATRIX = np.array([[ 1.0, 1.0, 1.0, 1.0],
-                                        [-1.0,-1.0,-1.0,-1.0],
-                                        [-1.0,-1.0,-1.0,-1.0],
-                                        [ 1.0, 1.0, 1.0, 1.0]])
+        self.CV_TO_GL_mtx   = np.array([[ 1.0, 0.0, 0.0, 0.0],
+                                        [ 0.0,-1.0, 0.0, 0.0],
+                                        [ 0.0, 0.0,-1.0, 0.0],
+                                        [ 0.0, 0.0, 0.0, 1.0]])
 
         #Setup window and OpenGL environment
         glutInit()
@@ -101,7 +101,7 @@ class ARapp:
         '''Given a marker, gives rotation and translation vectors that will map the object coordinates to image coordinates'''
 
         #Get rotation and translation vectors to match imgp
-        objp = np.array([[0.,0.,0.],[1.,0.,0.], [1.,1.,0.],[0.,1.,0.]], dtype='float32')
+        objp = np.array([[-5.,5.,0.],[5.,5.,0.], [5.,-5.,0.],[-5.,-5.,0.]], dtype='float32')
         imgp = marker['points'].astype('float32')
         _, rvecs, tvecs = cv2.solvePnP(objp, imgp, self.mtx, self.dist)
 
@@ -114,21 +114,18 @@ class ARapp:
                                 [rmtx[2][0],rmtx[2][1],rmtx[2][2],tvecs[2]],
                                 [0.0       ,0.0       ,0.0       ,1.0    ]])
 
-        #view_matrix = view_matrix * self.INVERSE_MATRIX
-        #view_matrix = np.transpose(view_matrix)
+        view_matrix = self.CV_TO_GL_mtx* view_matrix
+        view_matrix = np.transpose(view_matrix)
         return view_matrix
 
     def drawModel(self, marker):
         """ Adjust ModelView matrix based on rotation and translation vectors. Render model."""
 
-        #Generate viewMatrix
+        #Generate and load viewMatrix
         view_matrix = self.getViewMtx(marker)
-
-        #Load view matrix
         glMatrixMode(GL_MODELVIEW)
         glLoadMatrixd(view_matrix)
 
-        #return
         #Draw model
         glEnable(GL_LIGHTING)
         glEnable(GL_LIGHT0)
@@ -141,7 +138,7 @@ class ARapp:
         # glMaterialfv(GL_FRONT,GL_SPECULAR,[0.7,0.6,0.6,0.0])
         # glMaterialf(GL_FRONT,GL_SHININESS,0.25*128.0)
         #glutSolidTeapot(0.1)
-        glutWireCube(0.1)
+        glutWireCube(1)
 
     def render(self):
         ''' Render Augmented Reality frame'''
