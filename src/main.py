@@ -7,9 +7,6 @@ from OpenGL.GLUT import *
 
 import markers
 
-#OpenGL AR: https://www.safaribooksonline.com/library/view/programming-computer-vision/9781449341916/ch04.html
-
-
 class ARapp:
     def __init__(self):
 
@@ -101,7 +98,7 @@ class ARapp:
         '''Given a marker, gives rotation and translation vectors that will map the object coordinates to image coordinates'''
 
         #Get rotation and translation vectors to match imgp
-        objp = np.array([[-5.,5.,0.],[5.,5.,0.], [5.,-5.,0.],[-5.,-5.,0.]], dtype='float32')
+        objp = np.array([[-5.,-5.,0.],[5.,-5.,0.], [5.,5.,0.],[-5.,5.,0.]], dtype='float32')
         imgp = marker['points'].astype('float32')
         _, rvecs, tvecs = cv2.solvePnP(objp, imgp, self.mtx, self.dist)
 
@@ -114,8 +111,8 @@ class ARapp:
                                 [rmtx[2][0],rmtx[2][1],rmtx[2][2],tvecs[2]],
                                 [0.0       ,0.0       ,0.0       ,1.0    ]])
 
-        view_matrix = self.CV_TO_GL_mtx* view_matrix
-        view_matrix = np.transpose(view_matrix)
+        view_matrix = np.matmul(self.CV_TO_GL_mtx, view_matrix)
+        #view_matrix = np.transpose(view_matrix)
         return view_matrix
 
     def drawModel(self, marker):
@@ -127,10 +124,10 @@ class ARapp:
         glLoadMatrixd(view_matrix)
 
         #Draw model
-        glEnable(GL_LIGHTING)
-        glEnable(GL_LIGHT0)
-        glEnable(GL_DEPTH_TEST)
-        glClear(GL_DEPTH_BUFFER_BIT)
+        # glEnable(GL_LIGHTING)
+        # glEnable(GL_LIGHT0)
+        # glEnable(GL_DEPTH_TEST)
+        # glClear(GL_DEPTH_BUFFER_BIT)
 
         # draw red teapot
         # glMaterialfv(GL_FRONT,GL_AMBIENT,[0,0,0,0])

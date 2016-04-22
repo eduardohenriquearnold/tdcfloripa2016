@@ -1,6 +1,3 @@
-#https://github.com/rdmilligan/SaltwashAR/tree/master/scripts
-#https://github.com/Itseez/opencv_contrib/blob/master/modules/aruco/src/aruco.cpp
-
 import cv2
 import numpy as np
 import sys
@@ -120,7 +117,7 @@ def showMarkers(img, markers):
 	for marker in markers:
 		pts = marker['points'].astype('int32')
 		color = cv2.drawContours(color, [pts], -1, (0,0,255))
-		color = cv2.circle(color, tuple(pts[marker['orientation'],:]), 5, (255,0,0), -1)
+		color = cv2.circle(color, tuple(pts[0,:]), 5, (255,0,0), -1)
 		centroid = np.sum(pts, axis=0)/len(pts)
 		color = cv2.putText(color, str(marker['id']), tuple(centroid), cv2.FONT_HERSHEY_SIMPLEX, 2, (255,255,255))
 
@@ -134,9 +131,9 @@ def preprocess(img):
 	img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
 	#Resize image
-	f = 640. / img.shape[0]
-	if (f<1):
-		img = cv2.resize(img, None, fx=f, fy=f)
+	#f = 640. / img.shape[0]
+	#if (f<1):
+	#	img = cv2.resize(img, None, fx=f, fy=f)
 
 	return img
 
@@ -155,7 +152,7 @@ def detectMarkers(img):
 		code = getMarkerCode(patch)
 		id, orientation = codes.matchCode(code)
 		if id != -1:
-			contour = np.roll(contour, -orientation, axis=0)
+			#contour = np.roll(contour, -orientation, axis=0)
 			markers.append({'id':id, 'orientation':orientation, 'points':contour})
 
 		if 'patches' in debug:
