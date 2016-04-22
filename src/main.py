@@ -68,7 +68,7 @@ class ARapp:
 
         #Convert OpenCV image to suitable OpenGL texture format
         im = cv2.cvtColor(im, cv2.COLOR_BGR2RGB)
-        im = cv2.flip(im, 1)
+        #im = cv2.flip(im, 1)
 
         #Load background
         glMatrixMode(GL_MODELVIEW);
@@ -82,8 +82,6 @@ class ARapp:
 
         glRasterPos3f(0, self.height, -1.0);
         glDrawPixels (self.width, self.height, GL_RGB, GL_UNSIGNED_BYTE, im);
-
-        glEnable(GL_DEPTH_TEST)
 
     def drawAxis(self, axisSize):
 
@@ -125,7 +123,7 @@ class ARapp:
                                 [0.0       ,0.0       ,0.0       ,1.0    ]])
 
         view_matrix = np.matmul(self.CV_TO_GL_mtx, view_matrix)
-        #view_matrix = np.transpose(view_matrix)
+        view_matrix = np.transpose(view_matrix)
         return view_matrix
 
     def drawModel(self, marker):
@@ -137,6 +135,8 @@ class ARapp:
         glLoadIdentity();
         glLoadMatrixd(view_matrix)
 
+        glutSolidCube(10)
+        #self.drawAxis()
 
         #Draw model
         # glEnable(GL_LIGHTING)
@@ -150,8 +150,7 @@ class ARapp:
         # glMaterialfv(GL_FRONT,GL_SPECULAR,[0.7,0.6,0.6,0.0])
         # glMaterialf(GL_FRONT,GL_SHININESS,0.25*128.0)
         #glutSolidTeapot(0.1)
-        self.drawAxis(1)
-        glDisable(GL_DEPTH_TEST)
+
 
     def render(self):
         ''' Render Augmented Reality frame'''
