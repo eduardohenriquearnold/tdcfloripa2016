@@ -62,43 +62,40 @@ class ARapp:
 
         # set perspective
         gluPerspective(fovy,aspect,near,far)
-        glViewport(0,0,self.width,self.height)
+        glMatrixMode(GL_MODELVIEW)
+        glEnable(GL_TEXTURE_2D)
+        self.texture_background = glGenTextures(1)
 
     def drawBackground(self, im):
         """  Draw background image using a quad. """
 
         #Convert OpenCV image to suitable OpenGL texture format
         im = cv2.cvtColor(im, cv2.COLOR_BGR2RGB)
-        im = cv2.flip(im, -1)
+        im = cv2.flip(im, 1)
 
-        glMatrixMode(GL_MODELVIEW)
-        glLoadIdentity()
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+        #Create background texture
+        glBindTexture(GL_TEXTURE_2D, self.texture_background)
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
+        glTexImage2D(GL_TEXTURE_2D, 0, 3, self.width, self.height, 0, GL_RGB, GL_UNSIGNED_BYTE, im);
 
-        # bind the texture
-        glEnable(GL_TEXTURE_2D)
-        glBindTexture(GL_TEXTURE_2D,glGenTextures(1))
-        glTexImage2D(GL_TEXTURE_2D,0,GL_RGB,self.width,self.height,0,GL_RGB,GL_UNSIGNED_BYTE,im)
-
-        glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST)
-        glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST)
-
-        # create quad to fill the whole window
+        # draw background
+        glBindTexture(GL_TEXTURE_2D, self.texture_background)
+        glPushMatrix()
+        glTranslatef(0.0,0.0,-10.0)
         glBegin(GL_QUADS)
-        glTexCoord2f(0.0,0.0); glVertex3f(-1.0,-1.0,-1.0)
-        glTexCoord2f(1.0,0.0); glVertex3f( 1.0,-1.0,-1.0)
-        glTexCoord2f(1.0,1.0); glVertex3f( 1.0, 1.0,-1.0)
-        glTexCoord2f(0.0,1.0); glVertex3f(-1.0, 1.0,-1.0)
-        glEnd()
-
-        # clear the texture
-        glDeleteTextures(1)
+        glTexCoord2f(0.0, 1.0); glVertex3f(-4.0, -3.0, 0.0)
+        glTexCoord2f(1.0, 1.0); glVertex3f( 4.0, -3.0, 0.0)
+        glTexCoord2f(1.0, 0.0); glVertex3f( 4.0,  3.0, 0.0)
+        glTexCoord2f(0.0, 0.0); glVertex3f(-4.0,  3.0, 0.0)
+        glEnd( )
+        glPopMatrix()
 
     def getViewMtx(self, marker):
         '''Given a marker, gives rotation and translation vectors that will map the object coordinates to image coordinates'''
 
         #Get rotation and translation vectors to match imgp
-        objp = np.array([[-5.,-5.,0.],[5.,-5.,0.], [5.,5.,0.],[-5.,5.,0.]], dtype='float32')
+        objp = np.array([[0.,0.,0.],[1.,0.,0.], [1.,1.,0.],[0.,1.,0.]], dtype='float32')
         imgp = marker['points'].astype('float32')
         _, rvecs, tvecs = cv2.solvePnP(objp, imgp, self.mtx, self.dist)
 
@@ -120,8 +117,9 @@ class ARapp:
 
         #Generate and load viewMatrix
         view_matrix = self.getViewMtx(marker)
-        glMatrixMode(GL_MODELVIEW)
+        glPushMatrix()
         glLoadMatrixd(view_matrix)
+
 
         #Draw model
         # glEnable(GL_LIGHTING)
@@ -135,7 +133,8 @@ class ARapp:
         # glMaterialfv(GL_FRONT,GL_SPECULAR,[0.7,0.6,0.6,0.0])
         # glMaterialf(GL_FRONT,GL_SHININESS,0.25*128.0)
         #glutSolidTeapot(0.1)
-        glutWireCube(1)
+        glutSolidCube(0.05)
+        glPopMatrix()
 
     def render(self):
         ''' Render Augmented Reality frame'''
