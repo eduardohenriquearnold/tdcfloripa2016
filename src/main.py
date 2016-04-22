@@ -135,7 +135,21 @@ class ARapp:
         glLoadIdentity();
         glLoadMatrixd(view_matrix)
 
-        glutSolidCube(10)
+        mid = marker['id']
+
+        if mid == 0:
+            glutSolidCube(10)
+        if mid == 1:
+            glutSolidCone(5,-10,10,10)
+        if mid == 2:
+            glutSolidSphere(10,100,100)
+        if mid == 3:
+            glPushMatrix();
+            glScalef(5, 5, 5);
+            glutSolidTetrahedron()
+            glPopMatrix();
+
+        #Test function
         #self.drawAxis()
 
         #Draw model
