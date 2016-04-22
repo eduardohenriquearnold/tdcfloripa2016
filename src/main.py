@@ -33,20 +33,20 @@ class ARapp:
         glutDisplayFunc(self.render)
         glutIdleFunc(self.render)
 
+        glClearColor( 0.0, 0.0, 0.0, 1.0 );
+        glClearDepth( 1.0 );
+
+        glShadeModel (GL_SMOOTH);
+        glEnable(GL_NORMALIZE);
+
         #set projection from camera matrix
-        self.set_projection_from_camera(self.mtx)
+        #self.set_projection_from_camera(self.mtx)
 
         #loop
         glutMainLoop()
 
     def set_projection_from_camera(self, K):
         """  Set view from a camera calibration matrix. """
-
-        glClearColor(0.0, 0.0, 0.0, 0.0)
-        glClearDepth(1.0)
-        glDepthFunc(GL_LESS)
-        glEnable(GL_DEPTH_TEST)
-        glShadeModel(GL_SMOOTH)
 
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()
@@ -62,9 +62,6 @@ class ARapp:
 
         # set perspective
         gluPerspective(fovy,aspect,near,far)
-        glMatrixMode(GL_MODELVIEW)
-        glEnable(GL_TEXTURE_2D)
-        self.texture_background = glGenTextures(1)
 
     def drawBackground(self, im):
         """  Draw background image using a quad. """
@@ -73,29 +70,48 @@ class ARapp:
         im = cv2.cvtColor(im, cv2.COLOR_BGR2RGB)
         im = cv2.flip(im, 1)
 
-        #Create background texture
-        glBindTexture(GL_TEXTURE_2D, self.texture_background)
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
-        glTexImage2D(GL_TEXTURE_2D, 0, 3, self.width, self.height, 0, GL_RGB, GL_UNSIGNED_BYTE, im);
+        #Load background
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        glOrtho(0, self.width, 0, self.height, -1.0, 1.0);
+        glViewport(0, 0, self.width , self.height);
+        glDisable(GL_TEXTURE_2D);
+        glPixelZoom( 1, -1);
 
-        # draw background
-        glBindTexture(GL_TEXTURE_2D, self.texture_background)
-        glPushMatrix()
-        glTranslatef(0.0,0.0,-10.0)
-        glBegin(GL_QUADS)
-        glTexCoord2f(0.0, 1.0); glVertex3f(-4.0, -3.0, 0.0)
-        glTexCoord2f(1.0, 1.0); glVertex3f( 4.0, -3.0, 0.0)
-        glTexCoord2f(1.0, 0.0); glVertex3f( 4.0,  3.0, 0.0)
-        glTexCoord2f(0.0, 0.0); glVertex3f(-4.0,  3.0, 0.0)
+        glRasterPos3f(0, self.height, -1.0);
+        glDrawPixels (self.width, self.height, GL_RGB, GL_UNSIGNED_BYTE, im);
+
+        glEnable(GL_DEPTH_TEST)
+
+    def drawAxis(self, axisSize):
+
+        glColor3f (1,0,0)
+        glBegin(GL_LINES)
+        glVertex3f(0.0, 0.0, 0.0) #// origin of the line
+        glVertex3f(axisSize,0.0, 0.0) #// ending point of the line
         glEnd( )
-        glPopMatrix()
+
+
+        glColor3f (0,1,0)
+        glBegin(GL_LINES)
+        glVertex3f(0.0, 0.0, 0.0) #// origin of the line
+        glVertex3f(0.0, axisSize, 0.0) #// ending point of the line
+        glEnd( )
+
+
+        glColor3f (0,0,1)
+        glBegin(GL_LINES)
+        glVertex3f(0.0, 0.0, 0.0) #// origin of the line
+        glVertex3f(0.0, 0.0, axisSize) #// ending point of the line
+        glEnd( )
 
     def getViewMtx(self, marker):
         '''Given a marker, gives rotation and translation vectors that will map the object coordinates to image coordinates'''
 
         #Get rotation and translation vectors to match imgp
-        objp = np.array([[0.,0.,0.],[1.,0.,0.], [1.,1.,0.],[0.,1.,0.]], dtype='float32')
+        objp = np.array([[-5.,-5.,0.],[5.,-5.,0.], [5.,5.,0.],[-5.,5.,0.]], dtype='float32')
         imgp = marker['points'].astype('float32')
         _, rvecs, tvecs = cv2.solvePnP(objp, imgp, self.mtx, self.dist)
 
@@ -117,7 +133,8 @@ class ARapp:
 
         #Generate and load viewMatrix
         view_matrix = self.getViewMtx(marker)
-        glPushMatrix()
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
         glLoadMatrixd(view_matrix)
 
 
@@ -133,18 +150,17 @@ class ARapp:
         # glMaterialfv(GL_FRONT,GL_SPECULAR,[0.7,0.6,0.6,0.0])
         # glMaterialf(GL_FRONT,GL_SHININESS,0.25*128.0)
         #glutSolidTeapot(0.1)
-        glutSolidCube(0.05)
-        glPopMatrix()
+        self.drawAxis(1)
+        glDisable(GL_DEPTH_TEST)
 
     def render(self):
         ''' Render Augmented Reality frame'''
 
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-        glLoadIdentity()
 
         _, img = self.cam.read()
         img = cv2.resize(img, (self.width, self.height))
         self.drawBackground(img.copy())
+        self.set_projection_from_camera(self.mtx)
 
         img = markers.preprocess(img)
         detmarkers = markers.detectMarkers(img)
