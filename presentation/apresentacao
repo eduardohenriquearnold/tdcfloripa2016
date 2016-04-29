@@ -1,0 +1,49 @@
+==Slides Sobre visão computacional
+
+Em aplicações de visão computacional nós tentamos descobrir traços escondidos em uma imagens, para humanos é facil reconhecer e identificar objetos, porem para computadores esse é um desafio e tanto.
+
+Aplicações com visão computacional estão em todos os locais, quem você acha que sugere taggear um amigo em uma foto do facebook.
+
+Reconhecimento facial é somente um das aplicações de visão computacional, nós temos vigilância também podemos analisar os videos de um assalto para extrair mais informações ou assitir em tempo real uma pessoal sendo rastreada.
+
+Temos também as aplicações médicas, agora análises de cancer podem ser analisadas sem intervenção humana, temos também analises de Raio-X, estrutura de células todos usando visão computacional.
+
+Talvez uma aplicação de visão computacional que seja comum e possa estar no dia-a-dia de vocês é o Kinect, a microsoft consegue classificar e reconhecer poses humanas somente através das imagens.
+
+== Realidade Aumentada
+
+Realidade Aumentada é uma técnica utilizada para unir o mundo real com o virtual, ou seja estamos inserindo objetos virtuais no ambiente real, mostrando ao usuário em tempo real.
+
+==Python e OpenCV
+
+NumPy, o objetico de usar numpy é de expressas images como arrays multidimensionais, o que ajuda computacionalmente a realizar calculos numericos na imagem.
+
+OpenCV é um processador de imagens em tempo real com diversos algoritmos de visão computacional, desenvolvida em C/C++ também tem suporte para Jaca Python e Visual basic
+
+==inicio da Palestra
+
+Vamos tentar fazer as aplicações mais passo a passo possivel, tentaremos fazer a cada slide um passo novo alcançado o nosso objetivo final (imagem da aplicação final no slide).
+
+Asssim o primeiro passo que devemos ter em conta é a aquisição da imagem, em nosso caso iremos adquirir a imagem da webcam do notebook para posterior processamento.
+
+A função é simples, precisamos importar a biblioteca cv2 (OpenCV) onde iremos ter as funções.
+
+Se tudo der certo você deverá estar vendo sua webcam na tela, (PERGUNTAR EDUARDO, temos informações de Feedback da camera no terminal, falar sobre ela?  Falar pelo menos da resolução (pixels) e dos canais de cores? (RGB se não me engano)
+
+NUMPY (NUMERO DE COLUNAS X NUMERO DE LINHAS)
+
+==Tratamento da Imagem
+
+Se pensarmos na imagem como um conjunto de quadrados cada quadrado será um pixel. Os pixels podem ser representados em escala de cinza ou cores.
+Em escala de cinza Zero é preto e 255 é branco e os valores intermediarios são os tons de cinzas 
+
+Em Cores os pixels são geralmente representados por core RGB, um valor para vermelho outra para verde e outro para azul, juntando esse tres valores temos nossos padroes de cores
+
+DETALHE A SER FALADO? (OPENCV guarda na verdade os valores na ordem BLUE GREEN RED).
+
+
+
+
+
+
+ 

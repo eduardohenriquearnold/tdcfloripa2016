@@ -1,15 +1,16 @@
 ---
 title: Agenda
- 
-- Visão Geral sobre Visão Computacional
-- Python e OpenCV
-- Aquisição de imagens pela camêra
-- Detecção de Marcadores
-- Bordas e Contornos
-- Perspectiva
-- Threshold Adaptativo
-- Identificação 
-- [Bonus] Computação Gráfica
+class:
+
+  - Visão Geral sobre Visão Computacional
+  - Python e OpenCV
+  - Aquisição de imagens pela camêra
+  - Detecção de Marcadores
+  - Bordas e Contornos
+  - Perspectiva
+  - Threshold Adaptativo
+  - Identificação 
+  - [Bonus] Computação Gráfica
 
 ---
 title: Visão Computacional	
@@ -19,14 +20,23 @@ class: segue dark nobackground
 title: Visão Computacional 
 content_class: flexbox vcenter
 
-Definição
+" Visão computacional é a ciência responsável pela visão de uma máquina, pela forma como um computador enxerga o meio à sua volta,
+extraindo informações significativas a partir de imagens capturadas por câmeras de vídeo, sensores, scanners, entre outros dispositivos.
+Estas informações permitem reconhecer, manipular e pensar sobre os objetos que compõem uma imagem "
+Ballard, Dana Harry, Computer Vision, PrenticeHall, 1982.
 
 ---
 title: Visão Computacional 
 
-Exemplo de Aplicação
-![Sample](images/sample.jpg)
-
+ <div id="left" style="float: left"> 
+Aplicações Automobilísticas
+ </div>
+ 
+ <div id="right" style="float: right; background: #EEEEEE;">
+        <img src="images/visi_car.png">
+		
+ </div> 
+	<footer class="source white">http://visigenie.com/images/visi_hero.png</footer>
 ---
 title: Realidade Aumentada 
 content_class: flexbox vcenter
