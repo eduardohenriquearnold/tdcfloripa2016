@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Computer Vision with Python</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }	
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+
+      /*Images full scale*/
+      img{width: 100%; height:100%}
+
+      /* Two-column layout */
+      .left-column {
+        color: #777;
+        width: 20%;
+        height: 92%;
+        float: left;
+      }
+        .left-column h2:last-of-type, .left-column h3:last-child {
+          color: #000;
+        }
+      .right-column {
+        width: 75%;
+        float: right;
+        padding-top: 1em;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+layout: true
+background-image: url(images/bgnd.png)
+---
+class: center, middle
+![Center-aligned image](images/tdc.png)
+
+# Visão computacional com OpenCV e Python
+
+### Eduardo Henrique Arnold
+
+### William Jamir Silva
+
+---
+# Agenda
+
+- Visão Computacional
+- Python e OpenCV
+- Aquisição de imagens pela câmera
+- Detecção de Marcadores
+- Bordas e Contornos
+- Perspectiva
+- Threshold Adaptativo
+- Identificação 
+- **[Bonus]** Computação Gráfica
+
+---
+class: center, middle
+# Visão Computacional
+
+???
+
+"Visão computacional é a ciência responsável pela visão de uma máquina, pela forma como um computador enxerga o meio à sua volta,
+extraindo informações significativas a partir de imagens capturadas por câmeras de vídeo, sensores, scanners, entre outros dispositivos.
+Estas informações permitem reconhecer, manipular e pensar sobre os objetos que compõem uma imagem "
+Ballard, Dana Harry, Computer Vision, PrenticeHall, 1982.
+
+---
+## Aplicação em tráfego urbano
+![Center-aligned image](images/ex-traffic.png)
+
+???
+
+- Radares de velocidade e multa
+- Tráfego inteligente / sensores de congestionamento
+
+---
+## Reconhecimento facial
+![Center-aligned image](images/ex-face.jpg)
+
+---
+## Aplicações Médicas -- Computerized Tomography
+![Center-aligned image](images/ex-medicine.png)
+
+---
+# Python e OpenCV
+
+Packages and dependencias and which version we are using in this project
+
+Noções básicas de representação de imagem
+
+---
+# Aquisição da imagem
+
+```python
+from cv2 import *
+# initialize the camera
+cam = VideoCapture(0)   # 0 -> index of camera
+s, img = cam.read()
+if s:    # frame captured without any errors
+    namedWindow("cam-test",CV_WINDOW_AUTOSIZE)
+    imshow("cam-test",img)
+    waitKey(0)
+    destroyWindow("cam-test")
+    imwrite("filename.jpg",img) #save image
+```
+
+---
+# Preprocessamento
+
+Resize e grayscale
+
+---
+# Detecção dos marcadores
+
+--
+## Algoritmo de borda - Canny
+
+--
+## Detecção de contornos
+
+--
+## Filtragem de contornos
+
+--
+## Transformação de perspectiva
+
+--
+## Threshold adaptativo
+
+--
+## Identificação dos marcadores
+
+---
+# Aplicação de Realidade Aumentada
+## Computação gráfica com OpenGL e Python
+
+
+    </textarea>
+    <script src="remark-latest.min.js"/></script>
+    <script>
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>
