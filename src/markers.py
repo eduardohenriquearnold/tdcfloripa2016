@@ -5,7 +5,7 @@ import itertools
 import codes
 
 #Debug values: edges, contours, patches, markers
-debug=['markers']
+debug=['edges']
 
 def orderPointsCW(pts):
 	'''Order set of points clockwise'''
