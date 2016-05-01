@@ -17,7 +17,7 @@
 
       /*Images full scale*/
       img{width: 100%; height:100%}
-
+      img6{width: 60%; height:60%}
       /* Two-column layout */
       .left-column {
         color: #777;
@@ -80,23 +80,58 @@ Ballard, Dana Harry, Computer Vision, PrenticeHall, 1982.
 
 ???
 
-- Radares de velocidade e multa
+Aplicações de visão computacional estão em todas as partes, podemos encontrar em aplicações de tráfego urbano como por exeplo:
+- Radares de velocidade e multas
 - Tráfego inteligente / sensores de congestionamento
 
 ---
 ## Reconhecimento facial
 ![Center-aligned image](images/ex-face.jpg)
 
+???
+O reconhecimento facial é utilizado largamente em diversas aplicações, empresas como Facebook e Google utilizam-se dessa técnica para identificar rostos de pessoas em fotos de redes sociais. Temos também aplicações de vigilância onde uma camêra consegue identificar pessoas para extração de informações
+
 ---
 ## Aplicações Médicas -- Computerized Tomography
 ![Center-aligned image](images/ex-medicine.png)
 
+???
+A área de medicina tambem utiliza largamente visão computacional, diagnósticos médicos através da interpretação de uma radiografia já podem ser feitos sem a intervenção de um ser humano, como também contagem de células e identifcação de estrturas celulares. 
 ---
 # Python e OpenCV
 
-Packages and dependencias and which version we are using in this project
 
-Noções básicas de representação de imagem
+-Python 2.7
+-Numpy
+-OpenCV 3.10
+
+
+???
+NumPy, o objetico de se utilizar o Numpy é de expressasr images como arrays multidimensionais, o que ajuda computacionalmente a realizar cálculos numericos na imagem, (TODO há também a exigência por parte do OpenCV de ser utilizados dados do tipo Numpy.)
+
+OpenCV é um processador de imagens em tempo real com diversos algoritmos de visão computacional, desenvolvida em C/C++ também tem suporte para Java Python e Visual basic
+
+TODO William: Implementar a classe para texto .middle
+---
+#Objetivo final 
+
+![image](images/placeholder.jpg)
+
+???
+Nessa apresentação nosso objetivo é mostrar os passos necessários para alcançarmos o nosso objetivo final, que é mostrado na figura desse slide.
+---
+#Noções de representação de imagem
+
+
+![image](images/pixel.png)
+
+???
+Se pensarmos na imagem como um conjunto de quadrados cada quadrado será um pixel. Os pixels podem ser representados em escala de cinza ou cores.
+Em escala de cinza Zero é preto e 255 é branco e os valores intermediarios são os tons de cinzas 
+
+Em Cores os pixels são geralmente representados por core RGB, um valor para vermelho outra para verde e outro para azul, juntando esse tres valores temos nossos padroes de cores. Image [Linha][Coluna][RGB]
+
+O OpenCV guarda esse valores na ordem inversa, Blue Green e Red e seu eixo inicia-se do topo esquerdo da image.
 
 ---
 # Aquisição da imagem
@@ -113,6 +148,9 @@ if s:    # frame captured without any errors
     destroyWindow("cam-test")
     imwrite("filename.jpg",img) #save image
 ```
+???
+O primeiro passo para iniciarmos nossa aplicação é realizar a aquisição da imagem a ser processada.
+A função é simples, é necessário o pacotev cv2 (OpenCV) onde iremos ter as funções que nos auxiliam com os dispositivos de imagens.
 
 ---
 # Preprocessamento
