@@ -160,7 +160,7 @@ O objetivo de se utilizar o Numpy é de expressasr images como arrays multidimen
 
 .left-column[
 ## Imagens
-## OpenCV
+## Índices
 ]
 
 .right-column[
@@ -183,10 +183,17 @@ Formato padrão do OpenCV para imagens coloridas é BGR.
 print "Pixel (0, 0) - Red: %d, Green: %d, Blue: %d" % (r, g, b)
 ```
 
+Também é possível acessar cada canal de cor diretamente:
+```python
+row = 0 col = 0 #Pixel at (0,0)
+channel = 0 #Blue
+print image[row,col,channel]
+```
+
 ???
-Se pensarmos na imagem como um conjunto de quadrados cada quadrado será um pixel. Os pixels podem ser representados em escala de cinza ou cores.
-Em escala de cinza Zero é preto e 255 é branco e os valores intermediarios são os tons de cinzas
-Em Cores os pixels são geralmente representados por core RGB, um valor para vermelho outra para verde e outro para azul, juntando esse tres valores temos nossos padroes de cores. Image [Linha][Coluna][RGB]
+Uma imagem pode ser representada como um conjunto de elementos mínimos, chamados pixels. Os pixels podem ser representados em escala de cinza ou cores.
+Em escala de cinza Zero é preto e 255 é branco e os valores intermediarios são os tons de cinzas, no caso de imagens de 8 bits por pixel.
+Em cores os pixels são geralmente representados por cores RGB, um valor para vermelho outra para verde e outro para azul, juntando esse três valores temos nossos padroes de cores. Image[row][col][channel]
 
 O OpenCV guarda esse valores na ordem inversa, Blue Green e Red
 O eixo da imagem se inicia no topo esquerdo da image.
