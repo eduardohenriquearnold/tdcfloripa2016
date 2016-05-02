@@ -32,6 +32,18 @@
         width: 75%;
         float: right;
       }
+      .left-column50 {
+        width: 40%;
+        float: left;
+      }
+     .right-column50 {
+        width: 40%;
+        float: right;
+      }
+     .center-column50 {
+        width: 10%;
+	float: center;
+     }
     </style>
   </head>
   <body>
@@ -133,13 +145,11 @@ OpenCV é uma biblioteca de processamento de imagens com diversos algoritmos de 
 ### OpenCV 3.1
 ### Python 2.7
 ]
-
-.right-column[
-## Numpy
+.right-column[ 
+.left-column[![:img 80%,center](images/np.png)]
+.right-column[## Numpy]
 É utilizado como alternativa as estruturas de dados fornecidas nativamente pelo OpenCV em C++. O wrapper do OpenCV para Python fez essa opção pois é uma biblioteca consolidada e permite manipulação rápida de dados mesmo em Python.
-
-![:img 40%,center](images/np.png)
-
+]
 ]
 
 ???
@@ -260,25 +270,96 @@ Muitas das funções e algoritmos já desenvolvidos em openCV exigem que a image
 Para deteção de bordas o nivel de brilho da escala de cinza já é suficiente para deteção.
 
 ---
-# Detecção dos marcadores
+# Detecção das Bordas
 
---
-## Algoritmo de borda - Canny
+.left-column[	
+##Borda 
+]
+.right-column[
+### Algoritmo de borda - Canny
 
---
-## Detecção de contornos
+```python
+img = cv2.GaussianBlur(img, (5,5), 0)
+edges = cv2.Canny(img, 100, 200)
+```
+- 2º argumento  -> Thresold mínimo   
+- 3º argumento  ->  Thresold máximo
 
---
-## Filtragem de contornos
+.left-column50[![:img 100%,left](images/placeholder.jpg)]
+.center-column50[![:img 20%,center](images/arrow_right.png)]
+.right-column50[![:img 100%,right](images/placeholder2.jpg)]
+]
 
---
-## Transformação de perspectiva
+???
+Aplicar The first argument we
+supply is our blurred, grayscale image. Then, we need to
+provide two values: threshold1 and threshold2
 
---
-## Threshold adaptativo
+Canny um processo de multiplas etapas onde é feito o 
+- "blurring" da imagem para remover ruidos (suavizar a imagem)
+- Gradiente da imagem (Zeros e uns)
+- Supressão das boardas 
+- Limiarização (segmentos de bordas acima do limite superior)
 
---
+---
+# Detecção das Bordas
+.left-column[
+##Bordas
+##Contornos
+]
+.right-column[###Deteção de Contornos
+```python
+_, contours, _ = cv2.findContours(
+edges, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+```
+- 2º Argumento -> ?  
+- 3º Argumento -> Tipo de contornos 
+
+.left-column50[![:img 100%,left](images/placeholder.jpg)]
+.center-column50[![:img 20%,center](images/arrow_right.png)]
+.right-column50[![:img 100%,right](images/placeholder2.jpg)]
+]
+
+???
+Agora que temos as bordas nos podemos encontrar os contornos com findCountours, essa função retorna uma lista de contornos,
+Atenção, Essa função é destrutiva, sua imagem será sobreescrita, caso deseje usar ela depois realize uma copia com Numpy.
+Comentar sobre o tempo de processamento caso se utilize outros tipos de contonos e lista de hierarquia.
+
+
+---
+# Detecção das Bordas
+.left-column[
+##Bordas
+##Contornos
+##Filtragem]f
+.right-column[###Filtragem de Contornos
+Eduardo, poderia colocar algum coisa aqui nesse slide, não encontrei muitas referências.
+]
+---
+# Identificação dos marcadores
+.left-column[
+##Perspectiva]
+
+.right-column[###Transformação de perspectiva
+]
+---
+# Identificação dos marcadores
+.left-column[
+##Perspectiva
+##Threshold]
+
+.right-column[###Threshold adaptativo
+]
+
+---
 ## Identificação dos marcadores
+.left-column[
+##Perspectiva
+##Threshold
+##Marcadores
+]
+.right-column[###Identificação
+]
 
 ---
 # Aplicação de Realidade Aumentada
