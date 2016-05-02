@@ -52,15 +52,15 @@ class: center, middle
 ---
 # Agenda
 
-- Visão Computacional
-- Python e OpenCV
-- Aquisição de imagens pela câmera
-- Detecção de Marcadores
-- Bordas e Contornos
-- Perspectiva
-- Threshold Adaptativo
-- Identificação
-- **[Bonus]** Computação Gráfica
+- Visão Computacional e aplicações
+- Bibliotecas: Python e OpenCV
+- Exemplo de aplicação: Realidade aumentada
+ * Aquisição de imagens pela câmera
+ * Bordas e contornos
+ * Transformação de perspectiva
+ * Threshold adaptativo
+ * Identificação de marcadores
+ * **[Bonus]** Computação Gráfica
 
 ---
 class: center, middle
@@ -100,6 +100,7 @@ A área de medicina tambem utiliza largamente visão computacional, diagnóstico
 #Objetivo final
 
 ## Uma aplicação simples de realidade aumentada
+Esse projeto pode ser dividido em duas áreas: **visão computacional** e computação gráfica.
 ![:img 40%,center](images/placeholder.jpg)
 
 ???
@@ -160,6 +161,17 @@ O objetivo de se utilizar o Numpy é de expressasr images como arrays multidimen
 
 .left-column[
 ## Imagens
+]
+
+.right-column[
+## Mas o que são imagens?
+![:img 70%, center](images/pixel-color.gif)
+]
+---
+# Noções de representação de imagem
+
+.left-column[
+## Imagens
 ## Índices
 ]
 
@@ -192,12 +204,16 @@ print image[row,col,channel]
 
 ???
 Uma imagem pode ser representada como um conjunto de elementos mínimos, chamados pixels. Os pixels podem ser representados em escala de cinza ou cores.
-Em escala de cinza Zero é preto e 255 é branco e os valores intermediarios são os tons de cinzas, no caso de imagens de 8 bits por pixel.
-Em cores os pixels são geralmente representados por cores RGB, um valor para vermelho outra para verde e outro para azul, juntando esse três valores temos nossos padroes de cores. Image[row][col][channel]
 
-O OpenCV guarda esse valores na ordem inversa, Blue Green e Red
-O eixo da imagem se inicia no topo esquerdo da image.
+A origem da imagem está no canto superior esquerdo.
 
+Em escala de cinza 0 representa preto e o valor máximo (255, no caso de 8 bits por pixel) representa branco e os valores intermediarios são os tons de cinzas.
+
+Em cores os pixels são geralmente representados por esquemas RGB
+---
+class: center, middle
+
+# Passos para criar um detector de marcadores
 ---
 # Aquisição da imagem
 
