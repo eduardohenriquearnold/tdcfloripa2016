@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Computer Vision with Python</title>
+    <title>Visão Computacional com Python</title>
     <meta charset="utf-8">
     <style>
       @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
@@ -12,12 +12,12 @@
       h1, h2, h3 {
         font-family: 'Yanone Kaffeesatz';
         font-weight: normal;
-      }	
+      }
       .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
 
       /*Images full scale*/
       img{width: 100%; height:100%}
- 
+
       /* Two-column layout */
       .left-column {
         color: #777;
@@ -31,7 +31,6 @@
       .right-column {
         width: 75%;
         float: right;
-        padding-top: 1em;
       }
     </style>
   </head>
@@ -60,7 +59,7 @@ class: center, middle
 - Bordas e Contornos
 - Perspectiva
 - Threshold Adaptativo
-- Identificação 
+- Identificação
 - **[Bonus]** Computação Gráfica
 
 ---
@@ -93,27 +92,52 @@ O reconhecimento facial é utilizado largamente em diversas aplicações, empres
 
 ---
 ## Aplicações Médicas -- Computerized Tomography
-![Center-aligned image](images/ex-medicine.png)
+![:img 90%,center](images/ex-medicine.png)
 
 ???
-A área de medicina tambem utiliza largamente visão computacional, diagnósticos médicos através da interpretação de uma radiografia já podem ser feitos sem a intervenção de um ser humano, como também contagem de células e identifcação de estrturas celulares. 
+A área de medicina tambem utiliza largamente visão computacional, diagnósticos médicos através da interpretação de uma radiografia já podem ser feitos sem a intervenção de um ser humano, como também contagem de células e identifcação de estrturas celulares.
 ---
-# Python e OpenCV
+# Bibliotecas
 
+.left-column[
+### Python 2.7
+]
 
--Python 2.7
--Numpy
--OpenCV 3.10
+.right-column[
+## Numpy
+É utilizado como alternativa as estruturas de dados fornecidas nativamente pelo OpenCV em C++. O wrapper do OpenCV para Python fez essa opção pois é uma biblioteca consolidada e permite manipulação rápida de dados mesmo em Python.
 
+![:img 40%,center](images/np.png)
+
+]
 
 ???
-O objetivo de se utilizar o Numpy é de expressasr images como arrays multidimensionais, o que ajuda computacionalmente a realizar cálculos numericos na imagem, (TODO há também a exigência por parte do OpenCV de ser utilizados dados do tipo Numpy.)
-
-OpenCV é um processador de imagens em tempo real com diversos algoritmos de visão computacional, desenvolvida em C/C++ também tem suporte para Java Python e Visual basic
-
-TODO William: Implementar a classe para texto .middle
+O objetivo de se utilizar o Numpy é de expressasr images como arrays multidimensionais, o que ajuda computacionalmente a realizar cálculos numericos na imagem. É a alternativa Python para as estruturas de dados fornecidas pelo OpenCV nativamente em C++.
 ---
-#Objetivo final 
+# Bibliotecas
+
+.left-column[
+### Python 2.7
+### OpenCV 3.1
+]
+
+.right-column[
+![:img 30%, center](images/ocv.png)
+- Estruturas de dados básicas
+- Processamento básico de imagens
+- Imagem/Video I/O
+- Análise de vídeo
+- Detecção de objetos
+- Calibração de câmera e mapeamento
+- Aprendizado de máquina
+- GUI
+]
+
+???
+OpenCV é uma biblioteca de processamento de imagens com diversos algoritmos de visão computacional, desenvolvida em C/C++ também tem suporte para Java Python e Visual basic
+
+---
+#Objetivo final
 
 ![Center-aligned image](images/placeholder.jpg)
 
@@ -131,7 +155,7 @@ Nessa apresentação nosso objetivo é mostrar os passos necessários para alcan
 
 ???
 Se pensarmos na imagem como um conjunto de quadrados cada quadrado será um pixel. Os pixels podem ser representados em escala de cinza ou cores.
-Em escala de cinza Zero é preto e 255 é branco e os valores intermediarios são os tons de cinzas 
+Em escala de cinza Zero é preto e 255 é branco e os valores intermediarios são os tons de cinzas
 Em Cores os pixels são geralmente representados por core RGB, um valor para vermelho outra para verde e outro para azul, juntando esse tres valores temos nossos padroes de cores. Image [Linha][Coluna][RGB]
 
 O OpenCV guarda esse valores na ordem inversa, Blue Green e Red
@@ -159,7 +183,7 @@ A função é simples, é necessário o pacotev cv2 (OpenCV) onde iremos ter as 
 ---
 # Preprocessamento
 
-##Resize 
+##Resize
 ```python
 import cv2
 imagem = cv2.imread(args["imagem"])
@@ -177,7 +201,7 @@ Resize
 Para o resize iremos utilizar cv2.resize, devemos prestar atenção no aspect ratio (proporção entre a largura e altura).
 Na Quarta linha redimensionamos a imagem utilizando a nova largura e altura.
 Após isso utilizamos o metodo de redimensionamento com um metodo de interpolação no terceiro argumento.
-Opções disponiveis: 
+Opções disponiveis:
 cv2.INTER_AREA
 cv2.INTER_LINEAR
 cv2.INTER_CUBIC
@@ -219,6 +243,11 @@ Para deteção de bordas o nivel de brilho da escala de cinza já é suficiente 
     </textarea>
     <script src="remark-latest.min.js"/></script>
     <script>
+      /* Image scaling macro */
+      remark.macros.img = function (percentage, align) {
+        var url = this;
+        return '<p style="text-align: '+align+'"><img src="' + url + '" style="width: ' + percentage + '" /></p>';
+      };
       var slideshow = remark.create();
     </script>
   </body>
