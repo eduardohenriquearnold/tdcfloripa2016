@@ -91,33 +91,23 @@ Aplicações de visão computacional estão em todas as partes, podemos encontra
 O reconhecimento facial é utilizado largamente em diversas aplicações, empresas como Facebook e Google utilizam-se dessa técnica para identificar rostos de pessoas em fotos de redes sociais. Temos também aplicações de vigilância onde uma camêra consegue identificar pessoas para extração de informações
 
 ---
-## Aplicações Médicas -- Computerized Tomography
+## Aplicações Médicas - Computerized Tomography
 ![:img 90%,center](images/ex-medicine.png)
 
 ???
 A área de medicina tambem utiliza largamente visão computacional, diagnósticos médicos através da interpretação de uma radiografia já podem ser feitos sem a intervenção de um ser humano, como também contagem de células e identifcação de estrturas celulares.
 ---
-# Bibliotecas
+#Objetivo final
 
-.left-column[
-### Python 2.7
-]
-
-.right-column[
-## Numpy
-É utilizado como alternativa as estruturas de dados fornecidas nativamente pelo OpenCV em C++. O wrapper do OpenCV para Python fez essa opção pois é uma biblioteca consolidada e permite manipulação rápida de dados mesmo em Python.
-
-![:img 40%,center](images/np.png)
-
-]
+## Uma aplicação simples de realidade aumentada
+![:img 40%,center](images/placeholder.jpg)
 
 ???
-O objetivo de se utilizar o Numpy é de expressasr images como arrays multidimensionais, o que ajuda computacionalmente a realizar cálculos numericos na imagem. É a alternativa Python para as estruturas de dados fornecidas pelo OpenCV nativamente em C++.
+Nessa apresentação nosso objetivo é mostrar os passos necessários para alcançarmos uma aplicação simples de realidade aumentada.
 ---
 # Bibliotecas
 
 .left-column[
-### Python 2.7
 ### OpenCV 3.1
 ]
 
@@ -135,22 +125,62 @@ O objetivo de se utilizar o Numpy é de expressasr images como arrays multidimen
 
 ???
 OpenCV é uma biblioteca de processamento de imagens com diversos algoritmos de visão computacional, desenvolvida em C/C++ também tem suporte para Java Python e Visual basic
-
 ---
-#Objetivo final
+# Bibliotecas
 
-![Center-aligned image](images/placeholder.jpg)
+.left-column[
+### OpenCV 3.1
+### Python 2.7
+]
+
+.right-column[
+## Numpy
+É utilizado como alternativa as estruturas de dados fornecidas nativamente pelo OpenCV em C++. O wrapper do OpenCV para Python fez essa opção pois é uma biblioteca consolidada e permite manipulação rápida de dados mesmo em Python.
+
+![:img 40%,center](images/np.png)
+
+]
 
 ???
-Nessa apresentação nosso objetivo é mostrar os passos necessários para alcançarmos a aplicação que é mostrado na figura desse slide.
+O objetivo de se utilizar o Numpy é de expressasr images como arrays multidimensionais, o que ajuda computacionalmente a realizar cálculos numericos na imagem. É a alternativa Python para as estruturas de dados fornecidas pelo OpenCV nativamente em C++.
+
 ---
-#Noções de representação de imagem
+# Noções de representação de imagem
 
+.left-column[
+## Imagens
+]
 
-![image](images/pixel.png)
+.right-column[
+## Mas o que são imagens?
+![:img 80%, center](images/pixel.gif)
+]
+---
+# Noções de representação de imagem
 
+.left-column[
+## Imagens
+## OpenCV
+]
+
+.right-column[
+OpenCV utiliza o sistema **row major** para índice de matrizes.
+![:img 70%, center](images/rowmajor.png)
+]
+---
+# Noções de representação de imagem
+
+.left-column[
+## Imagens
+## Índices
+## Cor
+]
+
+## Representação em três canais
+Formato padrão do OpenCV para imagens coloridas é BGR.
 ```python
-(b, g, r) = image[0, 0]12print "Pixel at (0, 0) - Red: %d, Green: %d, Blue: %d" % (r, g, b)
+(b, g, r) = image[0, 0]
+print "Pixel (0, 0) - Red: %d, Green: %d, Blue: %d" % (r, g, b)
 ```
 
 ???
@@ -165,54 +195,46 @@ O eixo da imagem se inicia no topo esquerdo da image.
 # Aquisição da imagem
 
 ```python
-from cv2 import *
+import cv2
 # initialize the camera
-cam = VideoCapture(0)   # 0 -> index of camera
+cam = cv2.VideoCapture(0)   # 0 -> index of camera
 s, img = cam.read()
 if s:    # frame captured without any errors
-    namedWindow("cam-test",CV_WINDOW_AUTOSIZE)
-    imshow("cam-test",img)
-    waitKey(0)
-    destroyWindow("cam-test")
-    imwrite("filename.jpg",img) #save image
+    cv2.imshow("cam-test",img)
+    cv2.waitKey(0)
+    cv2.imwrite("filename.jpg",img) #save image
 ```
 ???
 O primeiro passo para iniciarmos nossa aplicação é realizar a aquisição da imagem a ser processada.
-A função é simples, é necessário o pacotev cv2 (OpenCV) onde iremos ter as funções que nos auxiliam com os dispositivos de imagens.
 
 ---
 # Preprocessamento
 
-##Resize
+## Resize
 ```python
 import cv2
-imagem = cv2.imread(args["imagem"])
-dimensao = (150, 150)
-Img_Redimensionada = cv2.resize(imagem, dimensao, interpolation = cv2.INTER_AREA)
-cv2.imshow("Resized (Width)", resized)
+img = cv2.imread(args["image"])
+dim = (150, 150)
+resized = cv2.resize(img, dim)
+cv2.imshow("Resized", resized)
 ```
+
 ##Grayscale
 ```python
-    _, img = cam.read()
-    gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+_, img = cam.read()
+gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+cv2.imshow("Resized", resized)
+cv2.WaitKey(0)
 ```
 ???
 Resize
 Para o resize iremos utilizar cv2.resize, devemos prestar atenção no aspect ratio (proporção entre a largura e altura).
-Na Quarta linha redimensionamos a imagem utilizando a nova largura e altura.
-Após isso utilizamos o metodo de redimensionamento com um metodo de interpolação no terceiro argumento.
-Opções disponiveis:
-cv2.INTER_AREA
-cv2.INTER_LINEAR
-cv2.INTER_CUBIC
-cv2.INTER_NEAREST.
 
 GrayScale
 Convertemos a imagem de RGB para Grayscale, porque convertemos para grayscale.
 As cores possuem complexidades, multicanais em grayscale lidamos somente com um canal de imagem fazendo assim o processamento ser mais rapidos
 Muitas das funções e algoritmos já desenvolvidos em openCV exigem que a imagem esteja em escala de cinza.
 Para deteção de bordas o nivel de brilho da escala de cinza já é suficiente para deteção.
-[Adicionar mais coisas?]
 
 ---
 # Detecção dos marcadores
@@ -248,7 +270,9 @@ Para deteção de bordas o nivel de brilho da escala de cinza já é suficiente 
         var url = this;
         return '<p style="text-align: '+align+'"><img src="' + url + '" style="width: ' + percentage + '" /></p>';
       };
-      var slideshow = remark.create();
+      var slideshow = remark.create({
+          highlightStyle: 'monokai',
+        });
     </script>
   </body>
 </html>
