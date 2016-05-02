@@ -17,7 +17,7 @@
 
       /*Images full scale*/
       img{width: 100%; height:100%}
-      img6{width: 60%; height:60%}
+ 
       /* Two-column layout */
       .left-column {
         color: #777;
@@ -107,7 +107,7 @@ A área de medicina tambem utiliza largamente visão computacional, diagnóstico
 
 
 ???
-NumPy, o objetico de se utilizar o Numpy é de expressasr images como arrays multidimensionais, o que ajuda computacionalmente a realizar cálculos numericos na imagem, (TODO há também a exigência por parte do OpenCV de ser utilizados dados do tipo Numpy.)
+O objetivo de se utilizar o Numpy é de expressasr images como arrays multidimensionais, o que ajuda computacionalmente a realizar cálculos numericos na imagem, (TODO há também a exigência por parte do OpenCV de ser utilizados dados do tipo Numpy.)
 
 OpenCV é um processador de imagens em tempo real com diversos algoritmos de visão computacional, desenvolvida em C/C++ também tem suporte para Java Python e Visual basic
 
@@ -115,23 +115,27 @@ TODO William: Implementar a classe para texto .middle
 ---
 #Objetivo final 
 
-![image](images/placeholder.jpg)
+![Center-aligned image](images/placeholder.jpg)
 
 ???
-Nessa apresentação nosso objetivo é mostrar os passos necessários para alcançarmos o nosso objetivo final, que é mostrado na figura desse slide.
+Nessa apresentação nosso objetivo é mostrar os passos necessários para alcançarmos a aplicação que é mostrado na figura desse slide.
 ---
 #Noções de representação de imagem
 
 
 ![image](images/pixel.png)
 
+```python
+(b, g, r) = image[0, 0]12print "Pixel at (0, 0) - Red: %d, Green: %d, Blue: %d" % (r, g, b)
+```
+
 ???
 Se pensarmos na imagem como um conjunto de quadrados cada quadrado será um pixel. Os pixels podem ser representados em escala de cinza ou cores.
 Em escala de cinza Zero é preto e 255 é branco e os valores intermediarios são os tons de cinzas 
-
 Em Cores os pixels são geralmente representados por core RGB, um valor para vermelho outra para verde e outro para azul, juntando esse tres valores temos nossos padroes de cores. Image [Linha][Coluna][RGB]
 
-O OpenCV guarda esse valores na ordem inversa, Blue Green e Red e seu eixo inicia-se do topo esquerdo da image.
+O OpenCV guarda esse valores na ordem inversa, Blue Green e Red
+O eixo da imagem se inicia no topo esquerdo da image.
 
 ---
 # Aquisição da imagem
@@ -155,7 +159,36 @@ A função é simples, é necessário o pacotev cv2 (OpenCV) onde iremos ter as 
 ---
 # Preprocessamento
 
-Resize e grayscale
+##Resize 
+```python
+import cv2
+imagem = cv2.imread(args["imagem"])
+dimensao = (150, 150)
+Img_Redimensionada = cv2.resize(imagem, dimensao, interpolation = cv2.INTER_AREA)
+cv2.imshow("Resized (Width)", resized)
+```
+##Grayscale
+```python
+    _, img = cam.read()
+    gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+```
+???
+Resize
+Para o resize iremos utilizar cv2.resize, devemos prestar atenção no aspect ratio (proporção entre a largura e altura).
+Na Quarta linha redimensionamos a imagem utilizando a nova largura e altura.
+Após isso utilizamos o metodo de redimensionamento com um metodo de interpolação no terceiro argumento.
+Opções disponiveis: 
+cv2.INTER_AREA
+cv2.INTER_LINEAR
+cv2.INTER_CUBIC
+cv2.INTER_NEAREST.
+
+GrayScale
+Convertemos a imagem de RGB para Grayscale, porque convertemos para grayscale.
+As cores possuem complexidades, multicanais em grayscale lidamos somente com um canal de imagem fazendo assim o processamento ser mais rapidos
+Muitas das funções e algoritmos já desenvolvidos em openCV exigem que a imagem esteja em escala de cinza.
+Para deteção de bordas o nivel de brilho da escala de cinza já é suficiente para deteção.
+[Adicionar mais coisas?]
 
 ---
 # Detecção dos marcadores
