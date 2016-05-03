@@ -347,10 +347,28 @@ for contour in contours:
 ---
 # Identificação dos marcadores
 .left-column[
-##Perspectiva]
+##Perspectiva
+]
 
 .right-column[###Transformação de perspectiva
+Tendo obtido o contorno correspondente ao marcador realizamos uma transformação de perspectiva para obter uma imagem planar do marcador que permitirá sua identificação.
+```python
+#Form destination points and get perspective matrix
+height, width = 100, 100
+dst = np.array([[0,0], [width-1,0],
+ [width-1,height-1], [0, height-1]], dtype='float32')
+dst = orderPointsCW(dst)
+matrix = cv2.getPerspectiveTransform(contour, dst)
+
+#Perform perspective transform to get patch
+patch = cv2.warpPerspective(img, matrix, (height, width))
+```
 ]
+---
+#Transformação de perspectiva
+
+.left-column50[![:img 100%,left](images/demo/original_patch.png)]
+.right-column50[![:img 80%,right](images/demo/patch.png)]
 ---
 # Identificação dos marcadores
 .left-column[
@@ -358,6 +376,13 @@ for contour in contours:
 ##Threshold]
 
 .right-column[###Threshold adaptativo
+Para obter uma imagem binária utilizamos o método de threshold automático de Otsu baseado na distribuição das intensidades dos pixels.
+```python
+_, patch = cv2.threshold(patch, 0, 255,
+ cv2.THRESH_BINARY+cv2.THRESH_OTSU)
+```
+.left-column50[![:img 50%,center](images/demo/patch.png)]
+.right-column50[![:img 50%,center](images/demo/patch_threshold.png)]
 ]
 
 ---
@@ -367,13 +392,69 @@ for contour in contours:
 ##Threshold
 ##Marcadores
 ]
-.right-column[###Identificação
+.right-column[
+###Identificação
+
+O próximo passo é obter uma matriz que corresponde ao padrão do marcador. Para isso escolhemos pontos distribuídos uniformemente sobre a imagem e acessamos o valor do pixel naquele ponto, caracterizando um bloco preto ou branco como 0 e 1.
+
+```python
+cells = codes.cells
+cellsize = patch.shape[0]/cells
+code = np.zeros((cells,cells))
+
+for i in range(cells):
+  for j in range(cells):
+    px = i*cellsize+0.5*cellsize
+    py = j*cellsize+0.5*cellsize
+    px, py = round(px), round(py)
+    code[i,j] = patch[px, py]/255.
+print code
+```
+]
+---
+# Identificação do marcador
+
+.left-column50[
+![:img 30%,center](images/demo/patch_threshold.png)
 ]
 
+.right-column50[
+```python
+[[ 0.  0.  0.  0.  0.  0.  0.]
+ [ 0.  1.  0.  0.  1.  1.  0.]
+ [ 0.  0.  1.  1.  0.  0.  0.]
+ [ 0.  0.  1.  0.  0.  1.  0.]
+ [ 0.  0.  1.  0.  0.  1.  0.]
+ [ 0.  0.  0.  1.  0.  1.  0.]
+ [ 0.  0.  0.  0.  0.  0.  0.]]
+```
+]
+
+Com esse padrão é possível detectar o marcador dentro de um dicionário específico e também obter sua orientação.
+
+Como resultado desse algoritmo temos então uma lista com todos os marcadores identificados na cena, além da **id** e **orientação** correspondentes.
 ---
 # Aplicação de Realidade Aumentada
+
+Com os marcadores detectados é possível fazer a identificação da cena e, através da calibração de câmera, obter uma matriz de transformação do espaço dos objetos para o espaço da imagem. (OpenCV *solvePnP*).
+
+![:img 50%, center](images/pose.jpg)
+
+Isso permite, por exemplo, inserir modelos de objetos sob a cena e criar uma aplicação básica de realidade aumentada.
+---
 ## Computação gráfica com OpenGL e Python
 
+OpenGL é uma biblioteca complexa para computação gráfica e está fora do escopo da apresentação, porém, como bonus, trouxemos uma demonstração de seu funcionamento.
+
+COLOCAR VIDEO
+
+---
+class: center, middle
+
+## Obrigado pela atenção
+
+### Código disponível publicamente em
+REPOSITORIO GITHUB
 
     </textarea>
     <script src="remark-latest.min.js"/></script>
