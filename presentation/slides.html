@@ -32,18 +32,16 @@
         width: 75%;
         float: right;
       }
+
+     /* Two-column layout for 50% slide */
       .left-column50 {
-        width: 40%;
+        width: 48%;
         float: left;
       }
      .right-column50 {
-        width: 40%;
+        width: 48%;
         float: right;
       }
-     .center-column50 {
-        width: 10%;
-	float: center;
-     }
     </style>
   </head>
   <body>
@@ -246,7 +244,7 @@ O primeiro passo para iniciarmos nossa aplicação é realizar a aquisição da 
 ```python
 import cv2
 img = cv2.imread(args["image"])
-dim = (150, 150)
+dim = (640, 480)
 resized = cv2.resize(img, dim)
 cv2.imshow("Resized", resized)
 ```
@@ -255,85 +253,97 @@ cv2.imshow("Resized", resized)
 ```python
 _, img = cam.read()
 gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
-cv2.imshow("Resized", resized)
+cv2.imshow("gray", resized)
 cv2.WaitKey(0)
 ```
 ???
 Resize
-Para o resize iremos utilizar cv2.resize, devemos prestar atenção no aspect ratio (proporção entre a largura e altura).
+Deve-se antentar para manter o aspect ratio constante (proporção entre a largura e altura).
 
 GrayScale
-Convertemos a imagem de RGB para Grayscale, porque convertemos para grayscale.
-As cores possuem complexidades, multicanais em grayscale lidamos somente com um canal de imagem fazendo assim o processamento ser mais rapidos
-Muitas das funções e algoritmos já desenvolvidos em openCV exigem que a imagem esteja em escala de cinza.
-Para deteção de bordas o nivel de brilho da escala de cinza já é suficiente para deteção.
+Convertemos a imagem de RGB para escala de cinza para processamento futuro visto que muitas das funções e algoritmos já desenvolvidos em openCV exigem que a imagem esteja em escala de cinza.
 
 ---
-# Detecção das Bordas
+# Detecção de Marcadores
 
 .left-column[
-##Borda
+##Bordas
 ]
 .right-column[
-### Algoritmo de borda - Canny
+### Canny
+
+- Blur para suavizar imagem
+- Calcular gradiente da imagem (magnitude e ângulo)
+- Non-maxima suppresion perpendicular à borda
+- Limiarização por magnitude do gradiente (segundo e terceiro argumento)
 
 ```python
 img = cv2.GaussianBlur(img, (5,5), 0)
 edges = cv2.Canny(img, 100, 200)
 ```
-- 2º argumento  -> Thresold mínimo   
-- 3º argumento  ->  Thresold máximo
-
-.left-column50[![:img 100%,left](images/placeholder.jpg)]
-.center-column50[![:img 20%,center](images/arrow_right.png)]
-.right-column50[![:img 100%,right](images/placeholder2.jpg)]
 ]
+---
+# Canny
 
-???
-Aplicar The first argument we
-supply is our blurred, grayscale image. Then, we need to
-provide two values: threshold1 and threshold2
-
-Canny um processo de multiplas etapas onde é feito o
-- "blurring" da imagem para remover ruidos (suavizar a imagem)
-- Gradiente da imagem (Zeros e uns)
-- Supressão das boardas
-- Limiarização (segmentos de bordas acima do limite superior)
+.left-column50[![:img 100%,left](images/demo/original.png)]
+.right-column50[![:img 100%,right](images/demo/edges.png)]
 
 ---
-# Detecção das Bordas
+# Detecção de Marcadores
+
 .left-column[
 ##Bordas
 ##Contornos
 ]
-.right-column[###Deteção de Contornos
-```python
-_, contours, _ = cv2.findContours(
-edges, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-```
-- 2º Argumento -> ?  
-- 3º Argumento -> Tipo de contornos
+.right-column[
+São conjuntos de pontos que se mantém conectados através da ligação entre pixels vizinhos que possuem mesma cor ou intensidade.
 
-.left-column50[![:img 100%,left](images/placeholder.jpg)]
-.center-column50[![:img 20%,center](images/arrow_right.png)]
-.right-column50[![:img 100%,right](images/placeholder2.jpg)]
+```python
+_, contours, _ = cv2.findContours(edges, cv2.RETR_LIST,
+ cv2.CHAIN_APPROX_SIMPLE)
+```
+
+A função retorna uma lista contendo conjunto de pontos (**Numpy** array).
+
+Segundo e terceiro argumentos permitem obter hierarquia entre contornos e utilizar módos de aproximação.
 ]
 
 ???
 Agora que temos as bordas nos podemos encontrar os contornos com findCountours, essa função retorna uma lista de contornos,
 Atenção, Essa função é destrutiva, sua imagem será sobreescrita, caso deseje usar ela depois realize uma copia com Numpy.
 Comentar sobre o tempo de processamento caso se utilize outros tipos de contonos e lista de hierarquia.
+---
+# Detecção de contornos
 
+.left-column50[![:img 100%,left](images/demo/edges.png)]
+.right-column50[![:img 100%,right](images/demo/contours.png)]
 
 ---
-# Detecção das Bordas
+# Detecção de Marcadores
 .left-column[
 ##Bordas
 ##Contornos
-##Filtragem]
-.right-column[###Filtragem de Contornos
-Eduardo, poderia colocar algum coisa aqui nesse slide, não encontrei muitas referências.
+##Filtragem
 ]
+.right-column[
+Para encontrar o marcador filtramos os contornos procurando por uma forma quadrilateral
+```python
+candidates = []
+for contour in contours:
+  #Get perimeter and poligonal approximation
+  perimeter = cv2.arcLength(contour, True)
+  approx = cv2.approxPolyDP(contour, 0.1*perimeter, True)
+
+  #Save as candidate if quadrilateral
+  if len(approx) == 4:
+    approx = np.array(approx, dtype='float32').reshape(4,2)
+    candidates.append(orderPointsCW(approx))
+```
+]
+---
+# Resultado do filtro de contornos
+.left-column50[![:img 100%,left](images/demo/contours.png)]
+.right-column50[![:img 100%,right](images/demo/contours-filtered.png)]
 ---
 # Identificação dos marcadores
 .left-column[
@@ -351,7 +361,7 @@ Eduardo, poderia colocar algum coisa aqui nesse slide, não encontrei muitas ref
 ]
 
 ---
-## Identificação dos marcadores
+# Identificação dos marcadores
 .left-column[
 ##Perspectiva
 ##Threshold
