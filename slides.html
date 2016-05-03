@@ -145,11 +145,10 @@ OpenCV é uma biblioteca de processamento de imagens com diversos algoritmos de 
 ### OpenCV 3.1
 ### Python 2.7
 ]
-.right-column[ 
+.right-column[
 .left-column[![:img 80%,center](images/np.png)]
 .right-column[## Numpy]
 É utilizado como alternativa as estruturas de dados fornecidas nativamente pelo OpenCV em C++. O wrapper do OpenCV para Python fez essa opção pois é uma biblioteca consolidada e permite manipulação rápida de dados mesmo em Python.
-]
 ]
 
 ???
@@ -272,8 +271,8 @@ Para deteção de bordas o nivel de brilho da escala de cinza já é suficiente 
 ---
 # Detecção das Bordas
 
-.left-column[	
-##Borda 
+.left-column[
+##Borda
 ]
 .right-column[
 ### Algoritmo de borda - Canny
@@ -295,10 +294,10 @@ Aplicar The first argument we
 supply is our blurred, grayscale image. Then, we need to
 provide two values: threshold1 and threshold2
 
-Canny um processo de multiplas etapas onde é feito o 
+Canny um processo de multiplas etapas onde é feito o
 - "blurring" da imagem para remover ruidos (suavizar a imagem)
 - Gradiente da imagem (Zeros e uns)
-- Supressão das boardas 
+- Supressão das boardas
 - Limiarização (segmentos de bordas acima do limite superior)
 
 ---
@@ -313,7 +312,7 @@ _, contours, _ = cv2.findContours(
 edges, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
 ```
 - 2º Argumento -> ?  
-- 3º Argumento -> Tipo de contornos 
+- 3º Argumento -> Tipo de contornos
 
 .left-column50[![:img 100%,left](images/placeholder.jpg)]
 .center-column50[![:img 20%,center](images/arrow_right.png)]
@@ -331,7 +330,7 @@ Comentar sobre o tempo de processamento caso se utilize outros tipos de contonos
 .left-column[
 ##Bordas
 ##Contornos
-##Filtragem]f
+##Filtragem]
 .right-column[###Filtragem de Contornos
 Eduardo, poderia colocar algum coisa aqui nesse slide, não encontrei muitas referências.
 ]
