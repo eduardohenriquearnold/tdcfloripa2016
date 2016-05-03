@@ -29,7 +29,7 @@ while(True):
         # Draw and display the corners
         img = cv2.drawChessboardCorners(img, (7,6), corners2,ret)
         cv2.imshow('img',img)
-        opt = cv2.waitKey(500)
+        opt = cv2.waitKey(500)&255
 
 	#Save points only if press s	
 	if opt == ord('s'):
