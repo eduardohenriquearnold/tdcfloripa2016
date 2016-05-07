@@ -62,59 +62,40 @@ class: center, middle
 ---
 # Agenda
 
-- Visão Computacional e aplicações
+- Visão computacional: introdução e aplicações
 - Bibliotecas: Python e OpenCV
 - Exemplo de aplicação: Realidade aumentada
- * Aquisição de imagens pela câmera
- * Bordas e contornos
- * Transformação de perspectiva
- * Threshold adaptativo
- * Identificação de marcadores
- * **[Bonus]** Computação Gráfica
 
 ---
-class: center, middle
 # Visão Computacional
 
-???
+> "Visão computacional é a ciência responsável pela visão de uma máquina, pela forma como um computador enxerga o meio à sua volta,
+> extraindo informações significativas a partir de imagens capturadas por câmeras de vídeo, sensores, scanners, entre outros dispositivos.
+> Estas informações permitem reconhecer, manipular e pensar sobre os objetos que compõem uma imagem "
 
-"Visão computacional é a ciência responsável pela visão de uma máquina, pela forma como um computador enxerga o meio à sua volta,
-extraindo informações significativas a partir de imagens capturadas por câmeras de vídeo, sensores, scanners, entre outros dispositivos.
-Estas informações permitem reconhecer, manipular e pensar sobre os objetos que compõem uma imagem "
-Ballard, Dana Harry, Computer Vision, PrenticeHall, 1982.
+> ** Ballard, Dana Harry**, Computer Vision, PrenticeHall, 1982.
 
----
-## Aplicação em tráfego urbano
-![Center-aligned image](images/ex-traffic.png)
-
-???
-
-Aplicações de visão computacional estão em todas as partes, podemos encontrar em aplicações de tráfego urbano como por exeplo:
-- Radares de velocidade e multas
-- Tráfego inteligente / sensores de congestionamento
+<br>
+Estuda mecanismos que permitem adquirir, processar, analizar e entender imagens para produzir informações e permitir tomada de decisão.
 
 ---
-## Reconhecimento facial
-![Center-aligned image](images/ex-face.jpg)
+## Carros autônomos
+![:img 90%, center](images/ex-driving-car.jpg)
 
-???
-O reconhecimento facial é utilizado largamente em diversas aplicações, empresas como Facebook e Google utilizam-se dessa técnica para identificar rostos de pessoas em fotos de redes sociais. Temos também aplicações de vigilância onde uma camêra consegue identificar pessoas para extração de informações
-
+* Criação de mapa 3D, detecção de objetos, estimação de distância e velocidade
 ---
-## Aplicações Médicas - Computerized Tomography
-![:img 90%,center](images/ex-medicine.png)
+## Realidade aumentada
 
-???
-A área de medicina tambem utiliza largamente visão computacional, diagnósticos médicos através da interpretação de uma radiografia já podem ser feitos sem a intervenção de um ser humano, como também contagem de células e identifcação de estrturas celulares.
+<p align="center"><iframe width="560" height="315" src="https://www.youtube.com/embed/cTIjpo6cb6M?rel=0&start=8&amp;showinfo=0" frameborder="0" allowfullscreen></iframe></p>
+
+* Detecção de objetos (marcadores), estimar posição da câmera na cena, sobreposição de modelo
 ---
-#Objetivo final
+## Outras aplicações
 
-## Uma aplicação simples de realidade aumentada
-Esse projeto pode ser dividido em duas áreas: **visão computacional** e computação gráfica.
-![:img 60%,center](images/augmented-reality.jpg)
-
-???
-Nessa apresentação nosso objetivo é mostrar os passos necessários para alcançarmos uma aplicação simples de realidade aumentada.
+* Reconstrução 3D de objetos
+* Monitoramento de trânsito
+* Sensoreamento remoto
+* Controle de qualidade em processos industriais
 ---
 # Bibliotecas
 
@@ -124,12 +105,9 @@ Nessa apresentação nosso objetivo é mostrar os passos necessários para alcan
 
 .right-column[
 ![:img 30%, center](images/ocv.png)
-- Estruturas de dados básicas
-- Processamento básico de imagens
-- Imagem/Video I/O
-- Análise de vídeo
-- Detecção de objetos
-- Calibração de câmera e mapeamento
+- Padrão na academia e na indústria
+- Processamento de imagens e vídeo
+- Algoritmos básicos -> estado da arte
 - Aprendizado de máquina
 - GUI
 ]
@@ -151,151 +129,75 @@ OpenCV é uma biblioteca de processamento de imagens com diversos algoritmos de 
 
 ???
 O objetivo de se utilizar o Numpy é de expressasr images como arrays multidimensionais, o que ajuda computacionalmente a realizar cálculos numericos na imagem. É a alternativa Python para as estruturas de dados fornecidas pelo OpenCV nativamente em C++.
-
 ---
-# Noções de representação de imagem
+#Objetivo final
 
-.left-column[
-## Imagens
+## Uma aplicação simples de realidade aumentada
+
+.left-column50[
+Passos:
+
+* Adquirir imagem da câmera
+* Identificar **marcador**
+  * Detectar bordas
+  * Selecionar contornos
+  * Transformação de perspectiva
+  * Amostrar imagem
+  * Reconhecer ID e orientação
+* Gerar estimativa de pose da câmera
+* Inserir modelo 3D sob imagem
 ]
 
-.right-column[
-## Mas o que são imagens?
-![:img 80%, center](images/pixel.gif)
-]
----
-# Noções de representação de imagem
-
-.left-column[
-## Imagens
-]
-
-.right-column[
-## Mas o que são imagens?
-![:img 70%, center](images/pixel-color.gif)
-]
----
-# Noções de representação de imagem
-
-.left-column[
-## Imagens
-## Índices
-]
-
-.right-column[
-OpenCV utiliza o sistema **row major** para índice de matrizes.
-![:img 70%, center](images/rowmajor.png)
-]
----
-# Noções de representação de imagem
-
-.left-column[
-## Imagens
-## Índices
-## Cor
-]
-
-## Representação em três canais
-Formato padrão do OpenCV para imagens coloridas é BGR.
-```python
-(b, g, r) = image[0, 0]
-print "Pixel (0, 0) - Red: %d, Green: %d, Blue: %d" % (r, g, b)
-```
-
-Também é possível acessar cada canal de cor diretamente:
-```python
-row = 0 col = 0 #Pixel at (0,0)
-channel = 0 #Blue
-print image[row,col,channel]
-```
-
-???
-Uma imagem pode ser representada como um conjunto de elementos mínimos, chamados pixels. Os pixels podem ser representados em escala de cinza ou cores.
-
-A origem da imagem está no canto superior esquerdo.
-
-Em escala de cinza 0 representa preto e o valor máximo (255, no caso de 8 bits por pixel) representa branco e os valores intermediarios são os tons de cinzas.
-
-Em cores os pixels são geralmente representados por esquemas RGB
----
-class: center, middle
-
-# Passos para criar um detector de marcadores
+.right-column50[![:img 100%,center](images/augmented-reality.jpg)]
 ---
 # Aquisição da imagem
 
+* Imagens são representadas com matrizes, arrays do **Numpy**
+* **OpenCV** usa sistema **BGR** por padrão para imagens coloridas
+* Índices são **row-major**, ie, [row,column]
+
 ```python
 import cv2
-# initialize the camera
 cam = cv2.VideoCapture(0)   # 0 -> index of camera
 s, img = cam.read()
-if s:    # frame captured without any errors
-    cv2.imshow("cam-test",img)
-    cv2.waitKey(0)
-    cv2.imwrite("filename.jpg",img) #save image
+cv2.imwrite("filename.jpg",img) #save image
+print img[2,3,0] #Intensity at row 2, column 3, blue channel
 ```
-???
-O primeiro passo para iniciarmos nossa aplicação é realizar a aquisição da imagem a ser processada.
 
+.left-column50[![:img 90%, center](images/pixel.gif)]
+.right-column50[![:img 80%, center](images/pixel-color.gif)]
 ---
 # Preprocessamento
 
-## Resize
+## Redimensionamento e conversão para escala de cinza
 ```python
-import cv2
-img = cv2.imread(args["image"])
+img = cv2.imread("filename.jpg")
 dim = (640, 480)
 resized = cv2.resize(img, dim)
-cv2.imshow("Resized", resized)
+gray = cv2.cvtColor(resized ,cv2.COLOR_BGR2GRAY)
+cv2.imshow("Result", gray)
+cv2.waitKey(0)
 ```
-
-##Grayscale
-```python
-_, img = cam.read()
-gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
-cv2.imshow("gray", resized)
-cv2.WaitKey(0)
-```
-???
-Resize
-Deve-se antentar para manter o aspect ratio constante (proporção entre a largura e altura).
-
-GrayScale
-Convertemos a imagem de RGB para escala de cinza para processamento futuro visto que muitas das funções e algoritmos já desenvolvidos em openCV exigem que a imagem esteja em escala de cinza.
 
 ---
-# Detecção de Marcadores
+# Identificar Marcadores - Bordas - Canny
 
-.left-column[
-##Bordas
-]
-.right-column[
-### Canny
-
-- Blur para suavizar imagem
-- Calcular gradiente da imagem (magnitude e ângulo)
-- Non-maxima suppresion perpendicular à borda
-- Limiarização por magnitude do gradiente (segundo e terceiro argumento)
+.left-column50[![:img 100%,left](images/demo/original.png)]
+.right-column50[![:img 100%,right](images/demo/edges.png)]
 
 ```python
 img = cv2.GaussianBlur(img, (5,5), 0)
 edges = cv2.Canny(img, 100, 200)
 ```
-]
----
-# Canny
-
-.left-column50[![:img 100%,left](images/demo/original.png)]
-.right-column50[![:img 100%,right](images/demo/edges.png)]
+- Segundo e terceiro argumento: limiarização das bordas
+- Específico da aplicação, obter empíricamente
 
 ---
-# Detecção de Marcadores
+## Identificar Marcadores - Obter contornos
 
-.left-column[
-##Bordas
-##Contornos
-]
-.right-column[
+.left-column50[![:img 100%,left](images/demo/edges.png)]
+.right-column50[![:img 100%,right](images/demo/contours.png)]
+
 São conjuntos de pontos que se mantém conectados através da ligação entre pixels vizinhos que possuem mesma cor ou intensidade.
 
 ```python
@@ -303,30 +205,16 @@ _, contours, _ = cv2.findContours(edges, cv2.RETR_LIST,
  cv2.CHAIN_APPROX_SIMPLE)
 ```
 
-A função retorna uma lista contendo conjunto de pontos (**Numpy** array).
-
-Segundo e terceiro argumentos permitem obter hierarquia entre contornos e utilizar módos de aproximação.
-]
-
-???
-Agora que temos as bordas nos podemos encontrar os contornos com findCountours, essa função retorna uma lista de contornos,
-Atenção, Essa função é destrutiva, sua imagem será sobreescrita, caso deseje usar ela depois realize uma copia com Numpy.
-Comentar sobre o tempo de processamento caso se utilize outros tipos de contonos e lista de hierarquia.
+* A função retorna uma lista contendo conjunto de pontos (**Numpy** array).
+* Segundo e terceiro argumentos permitem obter hierarquia entre contornos e utilizar módos de aproximação.
 ---
-# Detecção de contornos
+### Identificar Marcadores - Selecionar contornos quadrilaterais
 
-.left-column50[![:img 100%,left](images/demo/edges.png)]
-.right-column50[![:img 100%,right](images/demo/contours.png)]
+Para reduzir o número de candidatos a marcadores selecionamos apenas os contornos quadrilaterais através de uma aproximação poligonal
 
----
-# Detecção de Marcadores
-.left-column[
-##Bordas
-##Contornos
-##Filtragem
-]
-.right-column[
-Para encontrar o marcador filtramos os contornos procurando por uma forma quadrilateral
+.left-column50[![:img 100%,left](images/demo/contours.png)]
+.right-column50[![:img 100%,right](images/demo/contours-filtered.png)]
+
 ```python
 candidates = []
 for contour in contours:
@@ -339,83 +227,44 @@ for contour in contours:
     approx = np.array(approx, dtype='float32').reshape(4,2)
     candidates.append(orderPointsCW(approx))
 ```
-]
 ---
-# Resultado do filtro de contornos
-.left-column50[![:img 100%,left](images/demo/contours.png)]
-.right-column50[![:img 100%,right](images/demo/contours-filtered.png)]
----
-# Identificação dos marcadores
-.left-column[
-##Perspectiva
-]
+### Identificar Marcadores - Transformação de Perspectiva
 
-.right-column[###Transformação de perspectiva
-Tendo obtido o contorno correspondente ao marcador realizamos uma transformação de perspectiva para obter uma imagem planar do marcador que permitirá sua identificação.
+* A transformação de perspectiva permite obter uma imagem planar do marcador que possibilatará sua identificação.
+* Os passos a partir desse é repetido para cada candidato a marcador. O candidato só será validado como marcador ao final da pipeline.
+
+.left-column50[![:img 100%,left](images/demo/original_patch.png)]
+.right-column50[![:img 80%,right](images/demo/patch.png)]
+
 ```python
 #Form destination points and get perspective matrix
 height, width = 100, 100
 dst = np.array([[0,0], [width-1,0],
  [width-1,height-1], [0, height-1]], dtype='float32')
-dst = orderPointsCW(dst)
 matrix = cv2.getPerspectiveTransform(contour, dst)
-
 #Perform perspective transform to get patch
 patch = cv2.warpPerspective(img, matrix, (height, width))
 ```
-]
 ---
-#Transformação de perspectiva
+### Identificar Marcadores - Threshold automático
 
-.left-column50[![:img 100%,left](images/demo/original_patch.png)]
-.right-column50[![:img 80%,right](images/demo/patch.png)]
----
-# Identificação dos marcadores
-.left-column[
-##Perspectiva
-##Threshold]
-
-.right-column[###Threshold adaptativo
 Para obter uma imagem binária utilizamos o método de threshold automático de Otsu baseado na distribuição das intensidades dos pixels.
+
+.left-column50[![:img 50%,center](images/demo/patch.png)]
+.right-column50[![:img 50%,center](images/demo/patch_threshold.png)]
+
 ```python
 _, patch = cv2.threshold(patch, 0, 255,
  cv2.THRESH_BINARY+cv2.THRESH_OTSU)
 ```
-.left-column50[![:img 50%,center](images/demo/patch.png)]
-.right-column50[![:img 50%,center](images/demo/patch_threshold.png)]
-]
-
 ---
-# Identificação dos marcadores
-.left-column[
-##Perspectiva
-##Threshold
-##Marcadores
-]
-.right-column[
-###Identificação
+### Identificação dos marcadores - Amostragem das células
 
-O próximo passo é obter uma matriz que corresponde ao padrão do marcador. Para isso escolhemos pontos distribuídos uniformemente sobre a imagem e acessamos o valor do pixel naquele ponto, caracterizando um bloco preto ou branco como 0 e 1.
-
-```python
-cells = codes.cells
-cellsize = patch.shape[0]/cells
-code = np.zeros((cells,cells))
-
-for i in range(cells):
-  for j in range(cells):
-    px = i*cellsize+0.5*cellsize
-    py = j*cellsize+0.5*cellsize
-    px, py = round(px), round(py)
-    code[i,j] = patch[px, py]/255.
-print code
-```
-]
----
-# Identificação do marcador
+* Nosso marcador é composto de 7x7 células.
+* Para encontrar o código do marcador dividimos a imagem em células e selecionamos o pixel central de cada célula para estabelecer o valor daquela célula (0 ou 1).
 
 .left-column50[
-![:img 48%,center](images/demo/patch_threshold.png)
+![:img 48%,center](images/demo/patch_threshold_grid.png)
 ]
 
 .right-column50[
@@ -430,15 +279,28 @@ print code
 ```
 ]
 
-Com esse padrão é possível detectar o marcador dentro de um dicionário específico e também obter sua orientação.
----
-# Resultado final
+```python
+cells = codes.cells
+cellsize = patch.shape[0]/cells
+code = np.zeros((cells,cells))
 
-Como resultado desse algoritmo temos então uma lista com todos os marcadores identificados na cena, além da **id** e **orientação** correspondentes.
+for i in range(cells):
+  for j in range(cells):
+    px = i*cellsize+0.5*cellsize
+    py = j*cellsize+0.5*cellsize
+    px, py = round(px), round(py)
+    code[i,j] = patch[px, py]/255.
+print code
+```
+---
+### Identificação dos marcadores - Reconhecimento
+
+* Com o padrão obtido no passo anterior pode-se validar o candidato como um marcador através da comparação com um dicionário de marcadores válidos.
+* Também é possível obter a orientação correspondente.
 
 ![:img 50%, center](images/demo/markers.png)
 ---
-# Aplicação de Realidade Aumentada
+# Estimativa de pose da câmera
 
 Com os marcadores detectados é possível fazer a identificação da cena e, através da calibração de câmera, obter uma matriz de transformação do espaço dos objetos para o espaço da imagem. (OpenCV *solvePnP*).
 
@@ -446,7 +308,8 @@ Com os marcadores detectados é possível fazer a identificação da cena e, atr
 
 Isso permite, por exemplo, inserir modelos de objetos sob a cena e criar uma aplicação básica de realidade aumentada.
 ---
-## Computação gráfica com OpenGL e Python
+## Inserindo modelos 3D sob a imagem
+### Computação gráfica com OpenGL e Python
 
 OpenGL é uma biblioteca complexa para computação gráfica e está fora do escopo da apresentação, porém, como bonus, trouxemos uma demonstração de seu funcionamento.
 
