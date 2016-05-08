@@ -32,17 +32,17 @@
         width: 75%;
         float: right;
       }
-
-     /* Two-column layout for 50% slide */
+      /* Two-column layout for 50% slide */
       .left-column50 {
-        width: 48%;
+        width: 50%;
         float: left;
       }
      .right-column50 {
-        width: 48%;
+        width: 50%;
         float: right;
       }
-    </style>
+
+	  </style>
   </head>
   <body>
     <textarea id="source">
@@ -69,26 +69,38 @@ class: center, middle
 ---
 # Visão Computacional
 
+<br><br><br>
 > "Visão computacional é a ciência responsável pela visão de uma máquina, pela forma como um computador enxerga o meio à sua volta,
 > extraindo informações significativas a partir de imagens capturadas por câmeras de vídeo, sensores, scanners, entre outros dispositivos.
 > Estas informações permitem reconhecer, manipular e pensar sobre os objetos que compõem uma imagem "
 
 > ** Ballard, Dana Harry**, Computer Vision, PrenticeHall, 1982.
-
+???
 <br>
 Estuda mecanismos que permitem adquirir, processar, analizar e entender imagens para produzir informações e permitir tomada de decisão.
 
 ---
 ## Carros autônomos
-![:img 90%, center](images/ex-driving-car.jpg)
+![:img 90%, center](images/nvidia_computer_vision2.jpg)
 
-* Criação de mapa 3D, detecção de objetos, estimação de distância e velocidade
+* Detecção de objetos, 
+* Estimação de distância e velocidade
+* Representação 3D
+???
+ Detecção de objeto:
+	* Atenção aos obstáculos inesperados, cones de tráfego, pedestre atravessando, mudança repentina de faixa.
+	* Scanner a laser, no teto do carro gera uma representação 3D milimetricamente precisa dos arredores
 ---
 ## Realidade aumentada
+<br>
+.center[<video controls width="560" height="315" controls="controls">
+ <source src="images/Vuforia-Unity3D.mp4" type="video/mp4" />
+ <p>Error Loading the file.</p>
+ </video>]
 
-<p align="center"><iframe width="560" height="315" src="https://www.youtube.com/embed/cTIjpo6cb6M?rel=0&start=8&amp;showinfo=0" frameborder="0" allowfullscreen></iframe></p>
-
-* Detecção de objetos (marcadores), estimar posição da câmera na cena, sobreposição de modelo
+* Detecção de objetos (marcadores), 
+* Estimar posição da câmera na cena
+* Sobreposição de modelo
 ---
 ## Outras aplicações
 
@@ -180,31 +192,29 @@ cv2.waitKey(0)
 ```
 
 ---
-# Identificar Marcadores - Bordas - Canny
+## Identificar Marcadores - Bordas - Canny
 
-.left-column50[![:img 100%,left](images/demo/original.png)]
-.right-column50[![:img 100%,right](images/demo/edges.png)]
-
+.left-column50[![:img 95%, left](images/demo/original.png)]
+.right-column50[![:img 95%, right](images/demo/edges.png)]
+&nbsp;
 ```python
-img = cv2.GaussianBlur(img, (5,5), 0)
-edges = cv2.Canny(img, 100, 200)
+	img = cv2.GaussianBlur(img, (5,5), 0)
+	edges = cv2.Canny(img, 100, 200)
 ```
+
 - Segundo e terceiro argumento: limiarização das bordas
 - Específico da aplicação, obter empíricamente
 
 ---
 ## Identificar Marcadores - Obter contornos
-
-.left-column50[![:img 100%,left](images/demo/edges.png)]
-.right-column50[![:img 100%,right](images/demo/contours.png)]
-
 São conjuntos de pontos que se mantém conectados através da ligação entre pixels vizinhos que possuem mesma cor ou intensidade.
-
+.left-column50[![:img 95%,left](images/demo/edges.png)]
+.right-column50[![:img 95%,right](images/demo/contours.png)]
+&nbsp;
 ```python
 _, contours, _ = cv2.findContours(edges, cv2.RETR_LIST,
  cv2.CHAIN_APPROX_SIMPLE)
 ```
-
 * A função retorna uma lista contendo conjunto de pontos (**Numpy** array).
 * Segundo e terceiro argumentos permitem obter hierarquia entre contornos e utilizar módos de aproximação.
 ---
@@ -212,8 +222,8 @@ _, contours, _ = cv2.findContours(edges, cv2.RETR_LIST,
 
 Para reduzir o número de candidatos a marcadores selecionamos apenas os contornos quadrilaterais através de uma aproximação poligonal
 
-.left-column50[![:img 100%,left](images/demo/contours.png)]
-.right-column50[![:img 100%,right](images/demo/contours-filtered.png)]
+.left-column50[![:img 90%,left](images/demo/contours.png)]
+.right-column50[![:img 90%,right](images/demo/contours-filtered.png)]
 
 ```python
 candidates = []
@@ -221,7 +231,6 @@ for contour in contours:
   #Get perimeter and poligonal approximation
   perimeter = cv2.arcLength(contour, True)
   approx = cv2.approxPolyDP(contour, 0.1*perimeter, True)
-
   #Save as candidate if quadrilateral
   if len(approx) == 4:
     approx = np.array(approx, dtype='float32').reshape(4,2)
@@ -230,12 +239,11 @@ for contour in contours:
 ---
 ### Identificar Marcadores - Transformação de Perspectiva
 
-* A transformação de perspectiva permite obter uma imagem planar do marcador que possibilatará sua identificação.
-* Os passos a partir desse é repetido para cada candidato a marcador. O candidato só será validado como marcador ao final da pipeline.
+A transformação de perspectiva permite obter uma imagem planar do marcador que possibilatará sua identificação essa transformação é repetida para cada candidato a marcador.
 
-.left-column50[![:img 100%,left](images/demo/original_patch.png)]
-.right-column50[![:img 80%,right](images/demo/patch.png)]
-
+.left-column50[![:img 80%,left](images/demo/original_patch.png)]
+.right-column50[![:img 50%,right](images/demo/patch.png)]
+&nbsp;
 ```python
 #Form destination points and get perspective matrix
 height, width = 100, 100
@@ -249,10 +257,10 @@ patch = cv2.warpPerspective(img, matrix, (height, width))
 ### Identificar Marcadores - Threshold automático
 
 Para obter uma imagem binária utilizamos o método de threshold automático de Otsu baseado na distribuição das intensidades dos pixels.
-
+<br> <br><br> 
 .left-column50[![:img 50%,center](images/demo/patch.png)]
 .right-column50[![:img 50%,center](images/demo/patch_threshold.png)]
-
+&nbsp;
 ```python
 _, patch = cv2.threshold(patch, 0, 255,
  cv2.THRESH_BINARY+cv2.THRESH_OTSU)
@@ -264,21 +272,10 @@ _, patch = cv2.threshold(patch, 0, 255,
 * Para encontrar o código do marcador dividimos a imagem em células e selecionamos o pixel central de cada célula para estabelecer o valor daquela célula (0 ou 1).
 
 .left-column50[
-![:img 48%,center](images/demo/patch_threshold_grid.png)
+![:img 40%,center](images/demo/patch_threshold_grid.png) 
 ]
-
-.right-column50[
-```python
-[[ 0.  0.  0.  0.  0.  0.  0.]
- [ 0.  1.  0.  0.  1.  1.  0.]
- [ 0.  0.  1.  1.  0.  0.  0.]
- [ 0.  0.  1.  0.  0.  1.  0.]
- [ 0.  0.  1.  0.  0.  1.  0.]
- [ 0.  0.  0.  1.  0.  1.  0.]
- [ 0.  0.  0.  0.  0.  0.  0.]]
-```
-]
-
+.right-column50[![:img 83%,center](images/code_numpy.png)]
+&nbsp;
 ```python
 cells = codes.cells
 cellsize = patch.shape[0]/cells
@@ -291,6 +288,17 @@ for i in range(cells):
     px, py = round(px), round(py)
     code[i,j] = patch[px, py]/255.
 print code
+```
+
+???
+```python
+[[ 0.  0.  0.  0.  0.  0.  0.]
+ [ 0.  1.  0.  0.  1.  1.  0.]
+ [ 0.  0.  1.  1.  0.  0.  0.]
+ [ 0.  0.  1.  0.  0.  1.  0.]
+ [ 0.  0.  1.  0.  0.  1.  0.]
+ [ 0.  0.  0.  1.  0.  1.  0.]
+ [ 0.  0.  0.  0.  0.  0.  0.]]
 ```
 ---
 ### Identificação dos marcadores - Reconhecimento
@@ -314,7 +322,7 @@ Isso permite, por exemplo, inserir modelos de objetos sob a cena e criar uma apl
 OpenGL é uma biblioteca complexa para computação gráfica e está fora do escopo da apresentação, porém, como bonus, trouxemos uma demonstração de seu funcionamento.
 
 .center[
-<video controls width="640" height="360" controls="controls">
+<video controls width="400" height="360" controls="controls">
  <source src="images/demo/demo.ogv" type="video/ogg" />
  <p>Fallback text.</p>
  </video>
