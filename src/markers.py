@@ -5,7 +5,7 @@ import itertools
 import codes
 
 #Debug values: edges, contours, patches, markers
-debug=['edges']
+debug=[]
 
 def orderPointsCW(pts):
 	'''Order set of points clockwise'''
@@ -26,7 +26,7 @@ def extractCandidates(img):
 
 	#Pre-processing and edge detection
 	img = cv2.GaussianBlur(img, (5,5), 0)
-	edges = cv2.Canny(img, 100, 200)
+	edges = cv2.Canny(img, 100, 200,  L2gradient=True)
 
 	if 'edges' in debug:
 		cv2.imshow('edges', edges)
@@ -40,7 +40,7 @@ def extractCandidates(img):
 	for contour in contours:
 		#Get perimeter and poligonal approximation
 		perimeter = cv2.arcLength(contour, True)
-		approx = cv2.approxPolyDP(contour, 0.1*perimeter, True)
+		approx = cv2.approxPolyDP(contour, 0.01*perimeter, True)
 
 		#Save as candidate if quadrilateral
 		if len(approx) == 4:
