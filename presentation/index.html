@@ -41,6 +41,10 @@
         width: 50%;
         float: right;
       }
+      .no-column {
+        width: 100%;
+        float: right;
+      }
 
 	  </style>
   </head>
@@ -210,13 +214,14 @@ cv2.waitKey(0)
 São conjuntos de pontos que se mantém conectados através da ligação entre pixels vizinhos que possuem mesma cor ou intensidade.
 .left-column50[![:img 95%,left](images/demo/edges.png)]
 .right-column50[![:img 95%,right](images/demo/contours.png)]
-&nbsp;
+.no-column[
 ```python
 _, contours, _ = cv2.findContours(edges, cv2.RETR_LIST,
  cv2.CHAIN_APPROX_SIMPLE)
 ```
+
 * A função retorna uma lista contendo conjunto de pontos (**Numpy** array).
-* Segundo e terceiro argumentos permitem obter hierarquia entre contornos e utilizar módos de aproximação.
+* Segundo e terceiro argumentos permitem obter hierarquia entre contornos e utilizar módos de aproximação.]
 ---
 ### Identificar Marcadores - Selecionar contornos quadrilaterais
 
@@ -322,7 +327,7 @@ Isso permite, por exemplo, inserir modelos de objetos sob a cena e criar uma apl
 OpenGL é uma biblioteca complexa para computação gráfica e está fora do escopo da apresentação, porém, como bonus, trouxemos uma demonstração de seu funcionamento.
 
 .center[
-<video controls width="400" height="360" controls="controls">
+<video controls width="350" height="350" controls="controls">
  <source src="images/demo/demo.ogv" type="video/ogg" />
  <p>Fallback text.</p>
  </video>
